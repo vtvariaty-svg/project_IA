@@ -29,7 +29,18 @@
     const el = document.getElementById(id);
     if (!el) return;
     el.addEventListener("click", () => {
+
+      
       const ev = el.getAttribute("data-ev") || id;
+
+          // GA4 - evento correto de clique no checkout
+    if (typeof window.gtag === "function") {
+      window.gtag('event', 'click_checkout', {
+        event_category: 'engagement',
+        event_label: ev
+      });
+    }
+
       track(ev);
       safeNavigate(checkoutUrl);
     });
@@ -43,10 +54,7 @@
   const insideBtn = document.getElementById("seeWhatsInside");
   if (insideBtn) {
     insideBtn.addEventListener("click", () => {
-      gtag('event', 'click_checkout', {
-        event_category: 'engagement',
-        event_label: 'botao_hotmart'
-      });
+      
 
       track("see_inside");
       document.getElementById("inside")?.scrollIntoView({ behavior: "smooth" });
