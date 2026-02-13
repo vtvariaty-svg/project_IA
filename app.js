@@ -43,6 +43,11 @@
   const insideBtn = document.getElementById("seeWhatsInside");
   if (insideBtn) {
     insideBtn.addEventListener("click", () => {
+      gtag('event', 'click_checkout', {
+        event_category: 'engagement',
+        event_label: 'botao_hotmart'
+      });
+
       track("see_inside");
       document.getElementById("inside")?.scrollIntoView({ behavior: "smooth" });
     });
