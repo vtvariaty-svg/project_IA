@@ -60,6 +60,17 @@
       document.getElementById("inside")?.scrollIntoView({ behavior: "smooth" });
     });
   }
+  document.addEventListener("click", (e) => {
+  const el = e.target.closest("[data-ev]");
+  if (!el) return;
+
+  if (typeof window.gtag === "function") {
+    window.gtag("event", el.getAttribute("data-ev"), {
+      event_category: "navigation"
+    });
+  }
+});
+
 
   // Track page view (MVP)
   track("page_view");
