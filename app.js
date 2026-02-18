@@ -71,7 +71,13 @@
   }
 });
 
+document.querySelectorAll('.btn-primary').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    window.location.href = window.CHECKOUT_URL;
+  });
+});
 
   // Track page view (MVP)
   track("page_view");
 })();
+
