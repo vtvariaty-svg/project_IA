@@ -13,7 +13,6 @@
     :root{
       --bg0:#050816;
       --bg1:#0b1220;
-      --card:#0e1730;
       --muted:#9aa4b2;
       --text:#eef2ff;
       --line:rgba(255,255,255,.10);
@@ -24,7 +23,6 @@
       --danger:#ef4444;
       --warn:#f59e0b;
     }
-
     *{ box-sizing:border-box; }
     body{
       margin:0;
@@ -36,9 +34,7 @@
         linear-gradient(180deg, var(--bg0), var(--bg1));
       min-height:100vh;
     }
-
     .wrap{ max-width:1200px; margin:0 auto; padding:22px 16px 40px; }
-
     .topbar{
       display:flex; align-items:center; justify-content:space-between;
       gap:12px; margin-bottom:16px;
@@ -72,7 +68,6 @@
       gap:14px;
       margin-top:12px;
     }
-
     @media (min-width: 1100px){
       .grid{ grid-template-columns: 1.05fr 1fr .72fr; gap:16px; }
     }
@@ -104,12 +99,7 @@
       .span2{ grid-column: 1 / -1; }
     }
 
-    label{
-      display:block;
-      font-size:12px;
-      color:var(--muted);
-      margin:0 0 6px;
-    }
+    label{ display:block; font-size:12px; color:var(--muted); margin:0 0 6px; }
     .field{
       background: rgba(5,8,22,.60);
       border: 1px solid rgba(255,255,255,.10);
@@ -126,10 +116,7 @@
     }
     textarea.field{ min-height: 92px; resize: vertical; }
 
-    .rowActions{
-      display:flex; flex-wrap:wrap; gap:10px;
-      margin-top: 6px;
-    }
+    .rowActions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 6px; }
     .btn{
       border:1px solid rgba(255,255,255,.10);
       background: rgba(255,255,255,.06);
@@ -158,11 +145,7 @@
       border-color: rgba(239,68,68,.30);
     }
     .btnGhost{ background: transparent; }
-    .btn:disabled{
-      opacity:.55;
-      cursor:not-allowed;
-      transform:none !important;
-    }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; transform:none !important; }
 
     .hint{
       margin-top: 10px;
@@ -176,10 +159,7 @@
       display:flex; align-items:center; justify-content:space-between; gap:10px;
       padding:16px 16px 0;
     }
-    .status{
-      display:flex; align-items:center; gap:8px;
-      font-size:12px; color:var(--muted);
-    }
+    .status{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted); }
     .badge{
       display:inline-flex; align-items:center;
       padding:6px 10px; border-radius:999px;
@@ -213,21 +193,14 @@
       resize: vertical;
     }
 
-    .historyTopActions{
-      display:flex; gap:10px; flex-wrap:wrap;
-      padding:12px 16px 0;
-    }
+    .historyTopActions{ display:flex; gap:10px; flex-wrap:wrap; padding:12px 16px 0; }
     .historyList{
       padding:12px 16px 16px;
-      display:flex;
-      flex-direction:column;
-      gap:10px;
+      display:flex; flex-direction:column; gap:10px;
       max-height: 560px;
       overflow:auto;
     }
-    @media (max-width: 1099px){
-      .historyList{ max-height: 360px; }
-    }
+    @media (max-width: 1099px){ .historyList{ max-height: 360px; } }
 
     .item{
       background: rgba(5,8,22,.55);
@@ -235,25 +208,10 @@
       border-radius: 14px;
       padding:12px;
     }
-    .itemTitle{
-      font-size:12.5px;
-      font-weight:700;
-      margin:0 0 6px;
-      line-height:1.25;
-    }
-    .itemMeta{
-      font-size:11px;
-      color:var(--muted);
-      margin:0 0 10px;
-    }
-    .itemBtns{
-      display:flex; gap:8px; flex-wrap:wrap;
-    }
-    .miniBtn{
-      padding:8px 10px;
-      border-radius:12px;
-      font-size:12px;
-    }
+    .itemTitle{ font-size:12.5px; font-weight:700; margin:0 0 6px; line-height:1.25; }
+    .itemMeta{ font-size:11px; color:var(--muted); margin:0 0 10px; }
+    .itemBtns{ display:flex; gap:8px; flex-wrap:wrap; }
+    .miniBtn{ padding:8px 10px; border-radius:12px; font-size:12px; }
 
     .footer{
       margin-top:18px;
@@ -268,19 +226,15 @@
       border-bottom:1px dashed rgba(196,181,253,.55);
     }
 
-    .inlineRow{
-      display:flex;
-      gap:8px;
-      align-items:center;
-      flex-wrap:wrap;
-      margin-top:10px;
+    /* Login */
+    .loginWrap{
+      max-width:520px;
+      margin: 26px auto 0;
     }
-    .smallField{
-      flex:1 1 160px;
-      padding:10px 10px;
-      border-radius:12px;
-      font-size:12px;
+    .splitRow{
+      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
     }
+    .hidden{ display:none !important; }
   </style>
 </head>
 
@@ -291,154 +245,209 @@
         <div class="logo">IA</div>
         <div style="min-width:0">
           <h1>Gerador de Prompts — IA Operacional 30D</h1>
-          <p>Gere prompts de “IA especialista” (copiar e colar). Feito para uso prático e sem hype.</p>
+          <p>Área exclusiva. Faça login para usar o gerador e salvar seu histórico.</p>
         </div>
       </div>
-      <div class="pill">
-        <span class="dot"></span>
-        <span>Exclusivo para alunos</span>
+
+      <div class="splitRow">
+        <div class="pill" id="pillAuth">
+          <span class="dot"></span>
+          <span id="pillText">Deslogado</span>
+        </div>
+        <button class="btn btnGhost hidden" id="btnLogout">Sair</button>
       </div>
     </div>
 
-    <div class="grid">
-      <!-- INPUTS -->
+    <!-- LOGIN -->
+    <div class="loginWrap" id="loginArea">
       <section class="card">
         <div class="cardHead">
           <div>
-            <h2 class="cardTitle">Inputs do Sistema (pilares)</h2>
-            <p class="cardSub">Quanto melhor o input, melhor o prompt. Preencha direto ao ponto.</p>
+            <h2 class="cardTitle">Login</h2>
+            <p class="cardSub">Entre com o e-mail e senha que você criou após comprar.</p>
           </div>
-          <span class="badge">v1</span>
+          <span class="badge" id="authBadge">Aguardando</span>
         </div>
 
         <div class="cardBody">
-          <div class="form two">
-            <div class="span2">
-              <label for="nicho">Nicho</label>
-              <input id="nicho" class="field" placeholder="Ex: Vídeos TikTok com IA / eBooks com IA / Receitas fitness" />
-            </div>
-
-            <div class="span2">
-              <label for="objetivo">Objetivo operacional</label>
-              <input id="objetivo" class="field" placeholder="Ex: criar 30 roteiros curtos + plano de postagem para 7 dias" />
+          <div class="form">
+            <div>
+              <label for="loginEmail">Email</label>
+              <input id="loginEmail" class="field" placeholder="seuemail@..." />
             </div>
 
             <div>
-              <label for="publico">Público</label>
-              <input id="publico" class="field" placeholder="Ex: iniciantes" />
+              <label for="loginPass">Senha</label>
+              <input id="loginPass" class="field" type="password" placeholder="••••••••" />
             </div>
+
+            <div class="rowActions">
+              <button class="btn btnPrimary" id="btnLogin">Entrar</button>
+            </div>
+
+            <div class="hint">
+              Primeiro acesso? Use “Criar conta” com o <b>código de ativação</b> que você recebeu.
+            </div>
+
+            <hr style="border:none;border-top:1px solid var(--line); margin:14px 0;">
+
+            <h2 class="cardTitle" style="margin:0 0 10px;">Criar conta (1ª vez)</h2>
 
             <div>
-              <label for="nivel">Nível do usuário</label>
-              <select id="nivel" class="field">
-                <option value="">Selecione…</option>
-                <option value="iniciante">Iniciante</option>
-                <option value="intermediário">Intermediário</option>
-                <option value="avançado">Avançado</option>
-              </select>
+              <label for="signupCode">Código de ativação</label>
+              <input id="signupCode" class="field" placeholder="Ex: IA30D-ALUNO-2026" />
             </div>
 
-            <div class="span2">
-              <label for="formato">Formato de saída</label>
-              <input id="formato" class="field" placeholder="Ex: tabela com Hook / Script / CTA / Duração (20–40s)" />
+            <div class="rowActions">
+              <button class="btn btnSecondary" id="btnSignup">Criar conta</button>
             </div>
 
-            <div class="span2">
-              <label for="papelIA">Papel da IA (especialista)</label>
-              <input id="papelIA" class="field" placeholder="Ex: Estrategista de conteúdo TikTok focado em conversão para low ticket" />
+            <div class="hint">
+              Se você não quer liberar signup na página pública, você pode remover esse bloco e criar usuários manualmente no banco.
             </div>
-
-            <div class="span2">
-              <label for="restricoes">Restrições (obrigatórias)</label>
-              <textarea id="restricoes" class="field" placeholder="Ex: sem prometer dinheiro; linguagem simples; passo a passo; baixo orçamento; sem termos técnicos."></textarea>
-            </div>
-
-            <div class="span2">
-              <label for="tom">Tom (opcional)</label>
-              <input id="tom" class="field" placeholder="Ex: direto / amigável / técnico (se vazio: direto e prático)" />
-            </div>
-          </div>
-
-          <div class="rowActions">
-            <button class="btn btnPrimary" id="btnGerar">Gerar prompt</button>
-            <button class="btn btnSecondary" id="btnCopiar" disabled>Copiar</button>
-            <button class="btn btnGhost" id="btnLimpar">Limpar</button>
-          </div>
-
-          <div class="hint">
-            Dica: se quiser prompt <b>mais forte</b>, aumente “Restrições” e seja específico no “Formato”.
           </div>
         </div>
       </section>
+    </div>
 
-      <!-- OUTPUT -->
-      <section class="card">
-        <div class="outputTop">
-          <div>
-            <h2 class="cardTitle" style="margin:0;">Prompt gerado</h2>
-            <div class="status" id="statusLine">Pronto para gerar.</div>
+    <!-- APP -->
+    <div id="appArea" class="hidden">
+      <div class="grid">
+        <!-- INPUTS -->
+        <section class="card">
+          <div class="cardHead">
+            <div>
+              <h2 class="cardTitle">Inputs do Sistema (pilares)</h2>
+              <p class="cardSub">Quanto melhor o input, melhor o prompt. Preencha direto ao ponto.</p>
+            </div>
+            <span class="badge">v2</span>
           </div>
-          <span class="badge" id="badgeStatus">Aguardando</span>
-        </div>
 
-        <div class="outputBox">
-          <textarea id="saida" class="output" readonly>O prompt vai aparecer aqui…</textarea>
-        </div>
+          <div class="cardBody">
+            <div class="form two">
+              <div class="span2">
+                <label for="nicho">Nicho</label>
+                <input id="nicho" class="field" placeholder="Ex: Vídeos TikTok com IA / eBooks com IA / Receitas fitness" />
+              </div>
 
-        <div class="cardBody" style="padding-top:0;">
-          <div class="hint" style="margin-top:0;">
-            Copie e cole no ChatGPT. Se quiser iterar, altere apenas 1 pilar por vez (ex: “Formato”).
-          </div>
-          <div class="footer">
-            Suporte: <a class="link" href="mailto:suporte@metodoia30d.com">suporte@metodoia30d.com</a>
-          </div>
-        </div>
-      </section>
+              <div class="span2">
+                <label for="objetivo">Objetivo operacional</label>
+                <input id="objetivo" class="field" placeholder="Ex: criar 30 roteiros curtos + plano de postagem para 7 dias" />
+              </div>
 
-      <!-- HISTÓRICO -->
-      <section class="card">
-        <div class="cardHead">
-          <div>
-            <h2 class="cardTitle">Histórico</h2>
-            <p class="cardSub">Salvo na nuvem (Neon). Requer ID do aluno (MVP).</p>
+              <div>
+                <label for="publico">Público</label>
+                <input id="publico" class="field" placeholder="Ex: iniciantes" />
+              </div>
 
-            <div class="inlineRow">
-              <input id="userId" class="field smallField" placeholder="ID do aluno (MVP): email ou id" />
-              <button class="btn miniBtn btnSecondary" id="btnSaveUserId">Salvar ID</button>
+              <div>
+                <label for="nivel">Nível do usuário</label>
+                <select id="nivel" class="field">
+                  <option value="">Selecione…</option>
+                  <option value="iniciante">Iniciante</option>
+                  <option value="intermediário">Intermediário</option>
+                  <option value="avançado">Avançado</option>
+                </select>
+              </div>
+
+              <div class="span2">
+                <label for="formato">Formato de saída</label>
+                <input id="formato" class="field" placeholder="Ex: tabela com Hook / Script / CTA / Duração (20–40s)" />
+              </div>
+
+              <div class="span2">
+                <label for="papelIA">Papel da IA (especialista)</label>
+                <input id="papelIA" class="field" placeholder="Ex: Estrategista de conteúdo TikTok focado em conversão para low ticket" />
+              </div>
+
+              <div class="span2">
+                <label for="restricoes">Restrições (obrigatórias)</label>
+                <textarea id="restricoes" class="field" placeholder="Ex: sem prometer dinheiro; linguagem simples; passo a passo; baixo orçamento; sem termos técnicos."></textarea>
+              </div>
+
+              <div class="span2">
+                <label for="tom">Tom (opcional)</label>
+                <input id="tom" class="field" placeholder="Ex: direto / amigável / técnico (se vazio: direto e prático)" />
+              </div>
+            </div>
+
+            <div class="rowActions">
+              <button class="btn btnPrimary" id="btnGerar">Gerar prompt</button>
+              <button class="btn btnSecondary" id="btnCopiar" disabled>Copiar</button>
+              <button class="btn btnGhost" id="btnLimpar">Limpar</button>
+            </div>
+
+            <div class="hint">
+              Dica: se quiser prompt <b>mais forte</b>, aumente “Restrições” e seja específico no “Formato”.
             </div>
           </div>
-          <span class="badge" id="historyCount">0</span>
-        </div>
+        </section>
 
-        <div class="historyTopActions">
-          <button class="btn miniBtn btnGhost" id="btnRefreshHistory">Atualizar</button>
-          <button class="btn miniBtn btnDanger" id="btnClearHistory">Limpar histórico</button>
-        </div>
+        <!-- OUTPUT -->
+        <section class="card">
+          <div class="outputTop">
+            <div>
+              <h2 class="cardTitle" style="margin:0;">Prompt gerado</h2>
+              <div class="status" id="statusLine">Pronto para gerar.</div>
+            </div>
+            <span class="badge" id="badgeStatus">Aguardando</span>
+          </div>
 
-        <div class="historyList" id="historyList">
-          <!-- itens via JS -->
-        </div>
-      </section>
+          <div class="outputBox">
+            <textarea id="saida" class="output" readonly>O prompt vai aparecer aqui…</textarea>
+          </div>
 
+          <div class="cardBody" style="padding-top:0;">
+            <div class="hint" style="margin-top:0;">
+              Copie e cole no ChatGPT. Se quiser iterar, altere apenas 1 pilar por vez (ex: “Formato”).
+            </div>
+            <div class="footer">
+              Suporte: <a class="link" href="mailto:suporte@metodoia30d.com">suporte@metodoia30d.com</a>
+            </div>
+          </div>
+        </section>
+
+        <!-- HISTÓRICO -->
+        <section class="card">
+          <div class="cardHead">
+            <div>
+              <h2 class="cardTitle">Histórico</h2>
+              <p class="cardSub">Salvo na nuvem (Neon), sincroniza em qualquer dispositivo.</p>
+            </div>
+            <span class="badge" id="historyCount">0</span>
+          </div>
+
+          <div class="historyTopActions">
+            <button class="btn miniBtn btnGhost" id="btnRefreshHistory">Atualizar</button>
+            <button class="btn miniBtn btnDanger" id="btnClearHistory">Limpar histórico</button>
+          </div>
+
+          <div class="historyList" id="historyList"></div>
+        </section>
+      </div>
     </div>
   </div>
 
   <script>
-    // ====== CONFIG ======
-    const API_BASE = "https://prompt-api-7999.onrender.com"; // ajuste se mudar
-    const INTERNAL_API_KEY = "ia30d_prompt_2026";   // MVP (depois removemos do front)
+    // ===== CONFIG =====
+    const API_BASE = "https://prompt-api-7999.onrender.com"; // backend
+    const TOKEN_KEY = "ia30d_jwt_v1";
 
-    // ====== USER (MVP) ======
-    const USER_ID_KEY = "ia30d_user_id_v1";
-    function getUserId(){
-      return (localStorage.getItem(USER_ID_KEY) || "").trim();
-    }
-    function setUserId(v){
-      localStorage.setItem(USER_ID_KEY, (v || "").trim());
-    }
-
-    // ====== HELPERS ======
+    // ===== Helpers =====
     const $ = (id) => document.getElementById(id);
+
+    const loginArea = $("loginArea");
+    const appArea = $("appArea");
+    const pillText = $("pillText");
+    const btnLogout = $("btnLogout");
+    const authBadge = $("authBadge");
+
+    const btnLogin = $("btnLogin");
+    const btnSignup = $("btnSignup");
+    const loginEmail = $("loginEmail");
+    const loginPass = $("loginPass");
+    const signupCode = $("signupCode");
+
     const btnGerar = $("btnGerar");
     const btnCopiar = $("btnCopiar");
     const btnLimpar = $("btnLimpar");
@@ -451,9 +460,6 @@
     const btnRefreshHistory = $("btnRefreshHistory");
     const btnClearHistory = $("btnClearHistory");
 
-    const userIdInput = $("userId");
-    const btnSaveUserId = $("btnSaveUserId");
-
     function setStatus(type, text){
       statusLine.textContent = text;
       badge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : type === "loading" ? " loading" : "");
@@ -461,6 +467,11 @@
         type === "loading" ? "Gerando…" :
         type === "ok" ? "Gerado" :
         type === "err" ? "Erro" : "Aguardando";
+    }
+
+    function setAuthBadge(type, text){
+      authBadge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : type === "loading" ? " loading" : "");
+      authBadge.textContent = text;
     }
 
     function escapeHtml(s){
@@ -481,11 +492,22 @@
       }
     }
 
-    function makeTitleFromPayload(p){
-      const a = (p.nicho || "").trim();
-      const b = (p.objetivo || "").trim();
-      const t = (a ? a : "Prompt") + (b ? " — " + b : "");
-      return t.length > 72 ? t.slice(0,72) + "…" : t;
+    function getToken(){ return (localStorage.getItem(TOKEN_KEY) || "").trim(); }
+    function setToken(t){ localStorage.setItem(TOKEN_KEY, t); }
+    function clearToken(){ localStorage.removeItem(TOKEN_KEY); }
+
+    function authHeaders(){
+      const t = getToken();
+      return {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + t
+      };
+    }
+
+    async function copyText(text){
+      const t = (text || "").trim();
+      if (!t) return;
+      await navigator.clipboard.writeText(t);
     }
 
     function getPayload(){
@@ -519,53 +541,129 @@
       $("tom").value = payload.tom || "";
     }
 
-    async function copyText(text){
-      const t = (text || "").trim();
-      if (!t) return;
-      await navigator.clipboard.writeText(t);
-    }
+    // ===== AUTH FLOW =====
+    async function checkMe(){
+      const t = getToken();
+      if (!t) return null;
 
-    // ====== BACKEND HISTORY ======
-    function baseHeaders(){
-      const h = {
-        "Authorization": "Bearer " + INTERNAL_API_KEY
-      };
-      const uid = getUserId();
-      if (uid) h["X-User-Id"] = uid;
-      return h;
-    }
-
-    async function fetchHistory(limit = 30){
-      const uid = getUserId();
-      if (!uid) return { items: [], reason: "missing_user_id" };
-
-      const r = await fetch(API_BASE + "/api/history?limit=" + encodeURIComponent(String(limit)), {
+      const r = await fetch(API_BASE + "/auth/me", {
         method: "GET",
-        headers: baseHeaders()
+        headers: { "Authorization": "Bearer " + t }
       });
 
+      if (!r.ok) return null;
+      return r.json();
+    }
+
+    function showLogged(email){
+      loginArea.classList.add("hidden");
+      appArea.classList.remove("hidden");
+      btnLogout.classList.remove("hidden");
+      pillText.textContent = "Logado: " + email;
+      setAuthBadge("ok", "Logado");
+    }
+
+    function showLoggedOut(){
+      loginArea.classList.remove("hidden");
+      appArea.classList.add("hidden");
+      btnLogout.classList.add("hidden");
+      pillText.textContent = "Deslogado";
+      setAuthBadge("idle", "Aguardando");
+    }
+
+    btnLogout.onclick = () => {
+      clearToken();
+      showLoggedOut();
+    };
+
+    btnLogin.onclick = async () => {
+      setAuthBadge("loading", "Entrando…");
+      btnLogin.disabled = true;
+      try{
+        const r = await fetch(API_BASE + "/auth/login", {
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body: JSON.stringify({
+            email: loginEmail.value.trim(),
+            password: loginPass.value
+          })
+        });
+        const data = await r.json().catch(()=> ({}));
+        if (!r.ok) {
+          setAuthBadge("err", data?.error || ("HTTP " + r.status));
+          return;
+        }
+        setToken(data.token);
+        const me = await checkMe();
+        if (!me?.email) {
+          setAuthBadge("err", "Falha ao validar token");
+          clearToken();
+          return;
+        }
+        showLogged(me.email);
+        await renderHistory();
+      } finally {
+        btnLogin.disabled = false;
+      }
+    };
+
+    btnSignup.onclick = async () => {
+      setAuthBadge("loading", "Criando…");
+      btnSignup.disabled = true;
+      try{
+        const r = await fetch(API_BASE + "/auth/signup", {
+          method:"POST",
+          headers:{ "Content-Type":"application/json" },
+          body: JSON.stringify({
+            email: loginEmail.value.trim(),
+            password: loginPass.value,
+            signup_code: signupCode.value.trim()
+          })
+        });
+        const data = await r.json().catch(()=> ({}));
+        if (!r.ok) {
+          setAuthBadge("err", data?.error || ("HTTP " + r.status));
+          return;
+        }
+        setToken(data.token);
+        const me = await checkMe();
+        if (!me?.email) {
+          setAuthBadge("err", "Falha ao validar token");
+          clearToken();
+          return;
+        }
+        showLogged(me.email);
+        await renderHistory();
+      } finally {
+        btnSignup.disabled = false;
+      }
+    };
+
+    // ===== HISTORY (JWT) =====
+    async function fetchHistory(limit = 30){
+      const r = await fetch(API_BASE + "/api/history?limit=" + encodeURIComponent(String(limit)), {
+        method: "GET",
+        headers: { "Authorization":"Bearer " + getToken() }
+      });
       const data = await r.json().catch(()=> ({}));
-      if (!r.ok) return { items: [], reason: (data && (data.error || data.detail)) ? (data.error || data.detail) : ("HTTP " + r.status) };
-      return { items: data.items || [], reason: null };
+      if (!r.ok) throw new Error(data?.error || data?.detail || ("HTTP " + r.status));
+      return data.items || [];
     }
 
     async function deleteHistoryItem(id){
       const r = await fetch(API_BASE + "/api/history/" + encodeURIComponent(id), {
         method: "DELETE",
-        headers: baseHeaders()
+        headers: { "Authorization":"Bearer " + getToken() }
       });
       const data = await r.json().catch(()=> ({}));
-      if (!r.ok) throw new Error((data && (data.error || data.detail)) ? (data.error || data.detail) : ("HTTP " + r.status));
+      if (!r.ok) throw new Error(data?.error || data?.detail || ("HTTP " + r.status));
       return data;
     }
 
     async function clearHistoryAll(){
-      // backend não tem "delete all", então removemos item por item (limitado)
-      const { items, reason } = await fetchHistory(100);
-      if (reason) throw new Error(reason);
+      const items = await fetchHistory(100);
       if (!items.length) return;
 
-      // delete em lotes pequenos (evita estourar)
       const ids = items.map(x => x.id);
       const BATCH = 5;
 
@@ -575,64 +673,36 @@
       }
     }
 
-    // ====== HISTORY UI ======
     async function renderHistory(){
-      const uid = getUserId();
-      if (!uid){
-        historyCount.textContent = "0";
-        historyList.innerHTML = `
-          <div style="padding:10px 2px; color: var(--muted); font-size:12px; line-height:1.4;">
-            Defina seu <b>ID do aluno</b> acima para ativar o histórico na nuvem.<br/>
-            (MVP: pode ser seu e-mail.)
-          </div>
-        `;
-        return;
-      }
-
       historyList.innerHTML = `
         <div style="padding:10px 2px; color: var(--muted); font-size:12px; line-height:1.4;">
           Carregando histórico…
         </div>
       `;
 
-      const { items, reason } = await fetchHistory(30);
-
-      if (reason){
-        historyCount.textContent = "0";
-        historyList.innerHTML = `
-          <div style="padding:10px 2px; color: #fecaca; font-size:12px; line-height:1.4;">
-            Erro ao carregar histórico: <b>${escapeHtml(reason)}</b>
-          </div>
-        `;
-        return;
-      }
-
+      const items = await fetchHistory(30);
       historyCount.textContent = String(items.length);
 
       if (!items.length){
         historyList.innerHTML = `
           <div style="padding:10px 2px; color: var(--muted); font-size:12px; line-height:1.4;">
-            Nenhum prompt salvo ainda.<br/>Gere um prompt e ele aparecerá aqui.
+            Nenhum prompt salvo ainda.
           </div>
         `;
         return;
       }
 
-      historyList.innerHTML = items.map(item => {
-        const title = item.title || makeTitleFromPayload(item.payload || {});
-        const meta = item.created_at ? nowLabelISO(item.created_at) : "";
-        return `
-          <div class="item">
-            <div class="itemTitle">${escapeHtml(title)}</div>
-            <div class="itemMeta">${escapeHtml(meta)}</div>
-            <div class="itemBtns">
-              <button class="btn miniBtn btnGhost" data-act="open" data-id="${escapeHtml(item.id)}">Abrir</button>
-              <button class="btn miniBtn btnSecondary" data-act="copy" data-id="${escapeHtml(item.id)}">Copiar</button>
-              <button class="btn miniBtn btnDanger" data-act="del" data-id="${escapeHtml(item.id)}">Excluir</button>
-            </div>
+      historyList.innerHTML = items.map(item => `
+        <div class="item">
+          <div class="itemTitle">${escapeHtml(item.title || "Prompt")}</div>
+          <div class="itemMeta">${escapeHtml(nowLabelISO(item.created_at))}</div>
+          <div class="itemBtns">
+            <button class="btn miniBtn btnGhost" data-act="open" data-id="${escapeHtml(item.id)}">Abrir</button>
+            <button class="btn miniBtn btnSecondary" data-act="copy" data-id="${escapeHtml(item.id)}">Copiar</button>
+            <button class="btn miniBtn btnDanger" data-act="del" data-id="${escapeHtml(item.id)}">Excluir</button>
           </div>
-        `;
-      }).join("");
+        </div>
+      `).join("");
     }
 
     historyList.addEventListener("click", async (e) => {
@@ -642,9 +712,8 @@
       const act = btn.getAttribute("data-act");
       const id = btn.getAttribute("data-id");
 
-      // buscar item na lista atual (sem refetch)
-      const { items } = await fetchHistory(30);
-      const item = (items || []).find(x => x.id === id);
+      const items = await fetchHistory(30);
+      const item = items.find(x => x.id === id);
       if (!item) return;
 
       if (act === "open"){
@@ -677,13 +746,7 @@
     btnRefreshHistory.onclick = () => renderHistory();
 
     btnClearHistory.onclick = async () => {
-      const uid = getUserId();
-      if (!uid) {
-        alert("Defina o ID do aluno para usar o histórico na nuvem.");
-        return;
-      }
-      if (!confirm("Tem certeza que deseja apagar TODO o histórico deste aluno?")) return;
-
+      if (!confirm("Tem certeza que deseja apagar TODO o histórico da sua conta?")) return;
       btnClearHistory.disabled = true;
       try{
         await clearHistoryAll();
@@ -695,19 +758,7 @@
       }
     };
 
-    // ====== USER ID UI ======
-    btnSaveUserId.onclick = async () => {
-      const v = (userIdInput.value || "").trim();
-      if (!v){
-        alert("Informe um ID (MVP: seu e-mail).");
-        return;
-      }
-      setUserId(v);
-      await renderHistory();
-      setStatus("ok", "ID salvo. Histórico ativado.");
-    };
-
-    // ====== ACTIONS ======
+    // ===== GENERATE (JWT) =====
     btnGerar.onclick = async () => {
       const payload = getPayload();
       const err = validate(payload);
@@ -725,23 +776,16 @@
       saida.value = "Gerando…";
 
       try{
-        const headers = {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + INTERNAL_API_KEY
-        };
-        const uid = getUserId();
-        if (uid) headers["X-User-Id"] = uid;
-
         const r = await fetch(API_BASE + "/api/prompt", {
           method: "POST",
-          headers,
+          headers: authHeaders(),
           body: JSON.stringify(payload)
         });
 
         const data = await r.json().catch(() => ({}));
 
         if (!r.ok){
-          const msg = (data && (data.detail || data.error)) ? (data.detail || data.error) : ("HTTP " + r.status);
+          const msg = data?.error || data?.detail || ("HTTP " + r.status);
           saida.value = "Erro ao gerar: " + msg;
           setStatus("err", "Erro ao gerar: " + msg);
           return;
@@ -749,12 +793,10 @@
 
         const prompt = data.prompt || "(sem resposta)";
         saida.value = prompt;
-        setStatus("ok", data.saved?.id ? "Gerado e salvo no histórico." : "Prompt gerado (sem salvar: defina o ID do aluno).");
+        setStatus("ok", "Gerado e salvo no histórico.");
         btnCopiar.disabled = !(prompt && prompt.length > 5);
 
-        // atualiza histórico na tela (se tiver ID)
-        if (getUserId()) await renderHistory();
-
+        await renderHistory();
       } catch(e){
         saida.value = "Erro de conexão com o servidor.";
         setStatus("err", "Erro de conexão com o servidor.");
@@ -781,9 +823,16 @@
     };
 
     // init
-    setStatus("idle", "Pronto para gerar.");
-    userIdInput.value = getUserId();
-    renderHistory();
+    (async function init(){
+      setStatus("idle", "Pronto para gerar.");
+      const me = await checkMe();
+      if (me?.email){
+        showLogged(me.email);
+        await renderHistory();
+      } else {
+        showLoggedOut();
+      }
+    })();
   </script>
 </body>
 </html>
