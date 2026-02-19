@@ -73,7 +73,6 @@
       margin-top:12px;
     }
 
-    /* 3 colunas no desktop: Inputs | Output | Histórico  */
     @media (min-width: 1100px){
       .grid{ grid-template-columns: 1.05fr 1fr .72fr; gap:16px; }
     }
@@ -158,9 +157,7 @@
       background: rgba(239,68,68,.10);
       border-color: rgba(239,68,68,.30);
     }
-    .btnGhost{
-      background: transparent;
-    }
+    .btnGhost{ background: transparent; }
     .btn:disabled{
       opacity:.55;
       cursor:not-allowed;
@@ -175,7 +172,6 @@
     }
     .hint b{ color:var(--text); }
 
-    /* Output */
     .outputTop{
       display:flex; align-items:center; justify-content:space-between; gap:10px;
       padding:16px 16px 0;
@@ -217,7 +213,6 @@
       resize: vertical;
     }
 
-    /* History */
     .historyTopActions{
       display:flex; gap:10px; flex-wrap:wrap;
       padding:12px 16px 0;
@@ -271,6 +266,20 @@
       color:#c4b5fd;
       text-decoration:none;
       border-bottom:1px dashed rgba(196,181,253,.55);
+    }
+
+    .inlineRow{
+      display:flex;
+      gap:8px;
+      align-items:center;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+    .smallField{
+      flex:1 1 160px;
+      padding:10px 10px;
+      border-radius:12px;
+      font-size:12px;
     }
   </style>
 </head>
@@ -391,7 +400,12 @@
         <div class="cardHead">
           <div>
             <h2 class="cardTitle">Histórico</h2>
-            <p class="cardSub">Fica salvo neste dispositivo (localStorage).</p>
+            <p class="cardSub">Salvo na nuvem (Neon). Requer ID do aluno (MVP).</p>
+
+            <div class="inlineRow">
+              <input id="userId" class="field smallField" placeholder="ID do aluno (MVP): email ou id" />
+              <button class="btn miniBtn btnSecondary" id="btnSaveUserId">Salvar ID</button>
+            </div>
           </div>
           <span class="badge" id="historyCount">0</span>
         </div>
@@ -412,43 +426,15 @@
   <script>
     // ====== CONFIG ======
     const API_BASE = "https://prompt-api-7999.onrender.com"; // ajuste se mudar
-    const INTERNAL_API_KEY = "SUA_INTERNAL_API_KEY_AQUI";   // MVP (depois vamos remover do front)
+    const INTERNAL_API_KEY = "SUA_INTERNAL_API_KEY_AQUI";   // MVP (depois removemos do front)
 
-    // ====== STORAGE ======
-    const HISTORY_KEY = "ia30d_prompt_history_v1";
-    const HISTORY_LIMIT = 30;
-
-    function loadHistory(){
-      try{
-        const raw = localStorage.getItem(HISTORY_KEY);
-        const arr = raw ? JSON.parse(raw) : [];
-        return Array.isArray(arr) ? arr : [];
-      }catch{
-        return [];
-      }
+    // ====== USER (MVP) ======
+    const USER_ID_KEY = "ia30d_user_id_v1";
+    function getUserId(){
+      return (localStorage.getItem(USER_ID_KEY) || "").trim();
     }
-
-    function saveHistory(arr){
-      localStorage.setItem(HISTORY_KEY, JSON.stringify(arr));
-    }
-
-    function addToHistory(entry){
-      const arr = loadHistory();
-      arr.unshift(entry);
-      const sliced = arr.slice(0, HISTORY_LIMIT);
-      saveHistory(sliced);
-      return sliced;
-    }
-
-    function removeFromHistory(id){
-      const arr = loadHistory().filter(x => x.id !== id);
-      saveHistory(arr);
-      return arr;
-    }
-
-    function clearHistory(){
-      localStorage.removeItem(HISTORY_KEY);
-      return [];
+    function setUserId(v){
+      localStorage.setItem(USER_ID_KEY, (v || "").trim());
     }
 
     // ====== HELPERS ======
@@ -465,6 +451,9 @@
     const btnRefreshHistory = $("btnRefreshHistory");
     const btnClearHistory = $("btnClearHistory");
 
+    const userIdInput = $("userId");
+    const btnSaveUserId = $("btnSaveUserId");
+
     function setStatus(type, text){
       statusLine.textContent = text;
       badge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : type === "loading" ? " loading" : "");
@@ -474,16 +463,25 @@
         type === "err" ? "Erro" : "Aguardando";
     }
 
-    function nowLabel(ts){
+    function escapeHtml(s){
+      return String(s || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    function nowLabelISO(iso){
       try{
-        const d = new Date(ts);
+        const d = new Date(iso);
         return d.toLocaleString("pt-BR", { dateStyle:"short", timeStyle:"short" });
       }catch{
         return "";
       }
     }
 
-    function makeTitle(p){
+    function makeTitleFromPayload(p){
       const a = (p.nicho || "").trim();
       const b = (p.objetivo || "").trim();
       const t = (a ? a : "Prompt") + (b ? " — " + b : "");
@@ -527,12 +525,91 @@
       await navigator.clipboard.writeText(t);
     }
 
-    // ====== HISTORY UI ======
-    function renderHistory(){
-      const arr = loadHistory();
-      historyCount.textContent = String(arr.length);
+    // ====== BACKEND HISTORY ======
+    function baseHeaders(){
+      const h = {
+        "Authorization": "Bearer " + INTERNAL_API_KEY
+      };
+      const uid = getUserId();
+      if (uid) h["X-User-Id"] = uid;
+      return h;
+    }
 
-      if (!arr.length){
+    async function fetchHistory(limit = 30){
+      const uid = getUserId();
+      if (!uid) return { items: [], reason: "missing_user_id" };
+
+      const r = await fetch(API_BASE + "/api/history?limit=" + encodeURIComponent(String(limit)), {
+        method: "GET",
+        headers: baseHeaders()
+      });
+
+      const data = await r.json().catch(()=> ({}));
+      if (!r.ok) return { items: [], reason: (data && (data.error || data.detail)) ? (data.error || data.detail) : ("HTTP " + r.status) };
+      return { items: data.items || [], reason: null };
+    }
+
+    async function deleteHistoryItem(id){
+      const r = await fetch(API_BASE + "/api/history/" + encodeURIComponent(id), {
+        method: "DELETE",
+        headers: baseHeaders()
+      });
+      const data = await r.json().catch(()=> ({}));
+      if (!r.ok) throw new Error((data && (data.error || data.detail)) ? (data.error || data.detail) : ("HTTP " + r.status));
+      return data;
+    }
+
+    async function clearHistoryAll(){
+      // backend não tem "delete all", então removemos item por item (limitado)
+      const { items, reason } = await fetchHistory(100);
+      if (reason) throw new Error(reason);
+      if (!items.length) return;
+
+      // delete em lotes pequenos (evita estourar)
+      const ids = items.map(x => x.id);
+      const BATCH = 5;
+
+      for (let i = 0; i < ids.length; i += BATCH){
+        const slice = ids.slice(i, i + BATCH);
+        await Promise.allSettled(slice.map(id => deleteHistoryItem(id)));
+      }
+    }
+
+    // ====== HISTORY UI ======
+    async function renderHistory(){
+      const uid = getUserId();
+      if (!uid){
+        historyCount.textContent = "0";
+        historyList.innerHTML = `
+          <div style="padding:10px 2px; color: var(--muted); font-size:12px; line-height:1.4;">
+            Defina seu <b>ID do aluno</b> acima para ativar o histórico na nuvem.<br/>
+            (MVP: pode ser seu e-mail.)
+          </div>
+        `;
+        return;
+      }
+
+      historyList.innerHTML = `
+        <div style="padding:10px 2px; color: var(--muted); font-size:12px; line-height:1.4;">
+          Carregando histórico…
+        </div>
+      `;
+
+      const { items, reason } = await fetchHistory(30);
+
+      if (reason){
+        historyCount.textContent = "0";
+        historyList.innerHTML = `
+          <div style="padding:10px 2px; color: #fecaca; font-size:12px; line-height:1.4;">
+            Erro ao carregar histórico: <b>${escapeHtml(reason)}</b>
+          </div>
+        `;
+        return;
+      }
+
+      historyCount.textContent = String(items.length);
+
+      if (!items.length){
         historyList.innerHTML = `
           <div style="padding:10px 2px; color: var(--muted); font-size:12px; line-height:1.4;">
             Nenhum prompt salvo ainda.<br/>Gere um prompt e ele aparecerá aqui.
@@ -541,35 +618,33 @@
         return;
       }
 
-      historyList.innerHTML = arr.map(item => `
-        <div class="item">
-          <div class="itemTitle">${escapeHtml(item.title || "Prompt")}</div>
-          <div class="itemMeta">${escapeHtml(nowLabel(item.ts))}</div>
-          <div class="itemBtns">
-            <button class="btn miniBtn btnGhost" data-act="open" data-id="${item.id}">Abrir</button>
-            <button class="btn miniBtn btnSecondary" data-act="copy" data-id="${item.id}">Copiar</button>
-            <button class="btn miniBtn btnDanger" data-act="del" data-id="${item.id}">Excluir</button>
+      historyList.innerHTML = items.map(item => {
+        const title = item.title || makeTitleFromPayload(item.payload || {});
+        const meta = item.created_at ? nowLabelISO(item.created_at) : "";
+        return `
+          <div class="item">
+            <div class="itemTitle">${escapeHtml(title)}</div>
+            <div class="itemMeta">${escapeHtml(meta)}</div>
+            <div class="itemBtns">
+              <button class="btn miniBtn btnGhost" data-act="open" data-id="${escapeHtml(item.id)}">Abrir</button>
+              <button class="btn miniBtn btnSecondary" data-act="copy" data-id="${escapeHtml(item.id)}">Copiar</button>
+              <button class="btn miniBtn btnDanger" data-act="del" data-id="${escapeHtml(item.id)}">Excluir</button>
+            </div>
           </div>
-        </div>
-      `).join("");
-    }
-
-    function escapeHtml(s){
-      return String(s || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+        `;
+      }).join("");
     }
 
     historyList.addEventListener("click", async (e) => {
       const btn = e.target.closest("button[data-act]");
       if (!btn) return;
+
       const act = btn.getAttribute("data-act");
       const id = btn.getAttribute("data-id");
-      const arr = loadHistory();
-      const item = arr.find(x => x.id === id);
+
+      // buscar item na lista atual (sem refetch)
+      const { items } = await fetchHistory(30);
+      const item = (items || []).find(x => x.id === id);
       if (!item) return;
 
       if (act === "open"){
@@ -587,16 +662,49 @@
       }
 
       if (act === "del"){
-        removeFromHistory(id);
-        renderHistory();
+        try{
+          btn.disabled = true;
+          await deleteHistoryItem(id);
+          await renderHistory();
+        }catch(err){
+          alert("Erro ao excluir: " + (err?.message || "unknown"));
+        }finally{
+          btn.disabled = false;
+        }
       }
     });
 
     btnRefreshHistory.onclick = () => renderHistory();
-    btnClearHistory.onclick = () => {
-      if (!confirm("Tem certeza que deseja apagar todo o histórico deste dispositivo?")) return;
-      clearHistory();
-      renderHistory();
+
+    btnClearHistory.onclick = async () => {
+      const uid = getUserId();
+      if (!uid) {
+        alert("Defina o ID do aluno para usar o histórico na nuvem.");
+        return;
+      }
+      if (!confirm("Tem certeza que deseja apagar TODO o histórico deste aluno?")) return;
+
+      btnClearHistory.disabled = true;
+      try{
+        await clearHistoryAll();
+        await renderHistory();
+      }catch(err){
+        alert("Erro ao limpar: " + (err?.message || "unknown"));
+      }finally{
+        btnClearHistory.disabled = false;
+      }
+    };
+
+    // ====== USER ID UI ======
+    btnSaveUserId.onclick = async () => {
+      const v = (userIdInput.value || "").trim();
+      if (!v){
+        alert("Informe um ID (MVP: seu e-mail).");
+        return;
+      }
+      setUserId(v);
+      await renderHistory();
+      setStatus("ok", "ID salvo. Histórico ativado.");
     };
 
     // ====== ACTIONS ======
@@ -617,12 +725,16 @@
       saida.value = "Gerando…";
 
       try{
+        const headers = {
+          "Content-Type": "application/json",
+          "Authorization": "Bearer " + INTERNAL_API_KEY
+        };
+        const uid = getUserId();
+        if (uid) headers["X-User-Id"] = uid;
+
         const r = await fetch(API_BASE + "/api/prompt", {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": "Bearer " + INTERNAL_API_KEY
-          },
+          headers,
           body: JSON.stringify(payload)
         });
 
@@ -637,18 +749,11 @@
 
         const prompt = data.prompt || "(sem resposta)";
         saida.value = prompt;
-        setStatus("ok", "Prompt gerado com sucesso.");
+        setStatus("ok", data.saved?.id ? "Gerado e salvo no histórico." : "Prompt gerado (sem salvar: defina o ID do aluno).");
         btnCopiar.disabled = !(prompt && prompt.length > 5);
 
-        // salvar no histórico
-        addToHistory({
-          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + "_" + Math.random().toString(16).slice(2),
-          ts: Date.now(),
-          title: makeTitle(payload),
-          payload,
-          prompt
-        });
-        renderHistory();
+        // atualiza histórico na tela (se tiver ID)
+        if (getUserId()) await renderHistory();
 
       } catch(e){
         saida.value = "Erro de conexão com o servidor.";
@@ -677,6 +782,7 @@
 
     // init
     setStatus("idle", "Pronto para gerar.");
+    userIdInput.value = getUserId();
     renderHistory();
   </script>
 </body>
