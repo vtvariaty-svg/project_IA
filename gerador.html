@@ -34,10 +34,13 @@
         linear-gradient(180deg, var(--bg0), var(--bg1));
       min-height:100vh;
     }
+
     .wrap{ max-width:1200px; margin:0 auto; padding:22px 16px 40px; }
+
     .topbar{
       display:flex; align-items:center; justify-content:space-between;
       gap:12px; margin-bottom:16px;
+      flex-wrap:wrap;
     }
     .brand{ display:flex; align-items:center; gap:12px; min-width:0; }
     .logo{
@@ -182,7 +185,7 @@
     }
     .output{
       width:100%;
-      min-height: 360px;
+      min-height: 340px;
       border:none;
       outline:none;
       background: transparent;
@@ -227,14 +230,20 @@
     }
 
     /* Login */
-    .loginWrap{
-      max-width:520px;
-      margin: 26px auto 0;
-    }
-    .splitRow{
-      display:flex; gap:10px; flex-wrap:wrap; align-items:center;
-    }
+    .loginWrap{ max-width:520px; margin: 26px auto 0; }
+    .splitRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end; }
     .hidden{ display:none !important; }
+
+    .notice{
+      margin-top:10px;
+      padding:12px;
+      border-radius:14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.04);
+      color: var(--muted);
+      font-size:12px;
+      line-height:1.4;
+    }
   </style>
 </head>
 
@@ -264,7 +273,7 @@
         <div class="cardHead">
           <div>
             <h2 class="cardTitle">Login</h2>
-            <p class="cardSub">Entre com o e-mail e senha que você criou após comprar.</p>
+            <p class="cardSub">Entre com seu e-mail e senha para acessar o gerador.</p>
           </div>
           <span class="badge" id="authBadge">Aguardando</span>
         </div>
@@ -273,20 +282,21 @@
           <div class="form">
             <div>
               <label for="loginEmail">Email</label>
-              <input id="loginEmail" class="field" placeholder="seuemail@..." />
+              <input id="loginEmail" class="field" placeholder="seuemail@..." autocomplete="email" />
             </div>
 
             <div>
               <label for="loginPass">Senha</label>
-              <input id="loginPass" class="field" type="password" placeholder="••••••••" />
+              <input id="loginPass" class="field" type="password" placeholder="••••••••" autocomplete="current-password" />
             </div>
 
             <div class="rowActions">
               <button class="btn btnPrimary" id="btnLogin">Entrar</button>
             </div>
 
-            <div class="hint">
-              Primeiro acesso? Use “Criar conta” com o <b>código de ativação</b> que você recebeu.
+            <div class="notice">
+              <b>Primeiro acesso?</b><br/>
+              Crie sua conta abaixo usando o <b>código de ativação</b> (entregue no curso).
             </div>
 
             <hr style="border:none;border-top:1px solid var(--line); margin:14px 0;">
@@ -295,7 +305,7 @@
 
             <div>
               <label for="signupCode">Código de ativação</label>
-              <input id="signupCode" class="field" placeholder="Ex: IA30D-ALUNO-2026" />
+              <input id="signupCode" class="field" placeholder="Ex: IA30D-ALUNO-2026" autocomplete="off" />
             </div>
 
             <div class="rowActions">
@@ -303,7 +313,7 @@
             </div>
 
             <div class="hint">
-              Se você não quer liberar signup na página pública, você pode remover esse bloco e criar usuários manualmente no banco.
+              Dica: use uma senha com no mínimo <b>6 caracteres</b>.
             </div>
           </div>
         </div>
@@ -320,7 +330,7 @@
               <h2 class="cardTitle">Inputs do Sistema (pilares)</h2>
               <p class="cardSub">Quanto melhor o input, melhor o prompt. Preencha direto ao ponto.</p>
             </div>
-            <span class="badge">v2</span>
+            <span class="badge">vJWT</span>
           </div>
 
           <div class="cardBody">
@@ -378,7 +388,7 @@
             </div>
 
             <div class="hint">
-              Dica: se quiser prompt <b>mais forte</b>, aumente “Restrições” e seja específico no “Formato”.
+              Para deixar o prompt mais forte: especifique melhor o <b>Formato</b> + aumente as <b>Restrições</b>.
             </div>
           </div>
         </section>
@@ -399,7 +409,7 @@
 
           <div class="cardBody" style="padding-top:0;">
             <div class="hint" style="margin-top:0;">
-              Copie e cole no ChatGPT. Se quiser iterar, altere apenas 1 pilar por vez (ex: “Formato”).
+              Copie e cole no ChatGPT. Se quiser iterar, altere apenas 1 pilar por vez.
             </div>
             <div class="footer">
               Suporte: <a class="link" href="mailto:suporte@metodoia30d.com">suporte@metodoia30d.com</a>
@@ -430,7 +440,7 @@
 
   <script>
     // ===== CONFIG =====
-    const API_BASE = "https://prompt-api-7999.onrender.com"; // backend
+    const API_BASE = "https://prompt-api-7999.onrender.com";
     const TOKEN_KEY = "ia30d_jwt_v1";
 
     // ===== Helpers =====
@@ -579,6 +589,7 @@
     btnLogin.onclick = async () => {
       setAuthBadge("loading", "Entrando…");
       btnLogin.disabled = true;
+
       try{
         const r = await fetch(API_BASE + "/auth/login", {
           method:"POST",
@@ -593,13 +604,16 @@
           setAuthBadge("err", data?.error || ("HTTP " + r.status));
           return;
         }
+
         setToken(data.token);
+
         const me = await checkMe();
         if (!me?.email) {
           setAuthBadge("err", "Falha ao validar token");
           clearToken();
           return;
         }
+
         showLogged(me.email);
         await renderHistory();
       } finally {
@@ -610,6 +624,7 @@
     btnSignup.onclick = async () => {
       setAuthBadge("loading", "Criando…");
       btnSignup.disabled = true;
+
       try{
         const r = await fetch(API_BASE + "/auth/signup", {
           method:"POST",
@@ -625,13 +640,16 @@
           setAuthBadge("err", data?.error || ("HTTP " + r.status));
           return;
         }
+
         setToken(data.token);
+
         const me = await checkMe();
         if (!me?.email) {
           setAuthBadge("err", "Falha ao validar token");
           clearToken();
           return;
         }
+
         showLogged(me.email);
         await renderHistory();
       } finally {
