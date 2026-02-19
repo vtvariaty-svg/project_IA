@@ -1,195 +1,453 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-br">
 <head>
-<meta charset="UTF-8">
-<title>Gerador IA Operacional 30D</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Gerador — IA Operacional 30D</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
-<style>
-body{
- font-family:Inter;
- background:linear-gradient(120deg,#0f172a,#020617);
- color:#fff;
- margin:0;
-}
+  <style>
+    :root{
+      --bg0:#050816;
+      --bg1:#0b1220;
+      --card:#0e1730;
+      --muted:#9aa4b2;
+      --text:#eef2ff;
+      --line:rgba(255,255,255,.10);
+      --shadow: 0 18px 55px rgba(0,0,0,.40);
+      --radius: 18px;
+      --accent: #7c3aed; /* roxo */
+      --accent2:#22c55e; /* verde */
+      --danger:#ef4444;
+    }
 
-.container{
- max-width:1100px;
- margin:auto;
- padding:40px 20px;
-}
+    *{ box-sizing:border-box; }
+    body{
+      margin:0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% -10%, rgba(124,58,237,.35), transparent 60%),
+        radial-gradient(900px 600px at 95% 10%, rgba(34,197,94,.18), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      min-height:100vh;
+    }
 
-.header{
- display:flex;
- justify-content:space-between;
- align-items:center;
- margin-bottom:30px;
-}
+    .wrap{ max-width:1100px; margin:0 auto; padding:22px 16px 40px; }
 
-.badge{
- background:#10b981;
- padding:6px 12px;
- border-radius:20px;
- font-size:12px;
-}
+    /* Topbar */
+    .topbar{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:12px; margin-bottom:16px;
+    }
+    .brand{ display:flex; align-items:center; gap:12px; min-width:0; }
+    .logo{
+      width:42px; height:42px; border-radius:14px;
+      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,197,94,.75));
+      display:grid; place-items:center;
+      box-shadow: 0 10px 35px rgba(124,58,237,.25);
+      flex:0 0 auto;
+      font-weight:800;
+    }
+    .brand h1{ margin:0; font-size:16px; line-height:1.2; }
+    .brand p{ margin:4px 0 0; color:var(--muted); font-size:12px; }
 
-.grid{
- display:grid;
- grid-template-columns:1fr 1fr;
- gap:20px;
-}
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:8px 12px; border-radius:999px;
+      background: rgba(255,255,255,.06);
+      border:1px solid var(--line);
+      color:var(--muted);
+      font-size:12px;
+      white-space:nowrap;
+    }
+    .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent2); }
 
-.card{
- background:#0b1220;
- border-radius:20px;
- padding:25px;
- box-shadow:0 0 40px rgba(0,255,255,0.05);
-}
+    /* Layout */
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+      margin-top:12px;
+    }
+    @media (min-width: 980px){
+      .grid{ grid-template-columns: 1.05fr .95fr; gap:16px; }
+    }
 
-input{
- width:100%;
- padding:12px;
- margin-bottom:12px;
- border-radius:10px;
- border:none;
- background:#111827;
- color:#fff;
-}
+    .card{
+      background: rgba(14,23,48,.72);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      overflow:hidden;
+    }
+    .cardHead{
+      padding:16px 16px 0;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+    }
+    .cardTitle{ margin:0; font-size:14px; letter-spacing:.2px; }
+    .cardSub{ margin:6px 0 0; font-size:12px; color:var(--muted); }
+    .cardBody{ padding:16px; }
 
-button{
- padding:12px 18px;
- border-radius:10px;
- border:none;
- cursor:pointer;
- margin-right:10px;
-}
+    /* Form */
+    .form{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:12px;
+    }
+    @media (min-width: 650px){
+      .form.two{ grid-template-columns: 1fr 1fr; }
+      .span2{ grid-column: 1 / -1; }
+    }
 
-.gerar{background:#22c55e;}
-.copiar{background:#3b82f6;}
+    label{
+      display:block;
+      font-size:12px;
+      color:var(--muted);
+      margin:0 0 6px;
+    }
+    .field{
+      background: rgba(5,8,22,.60);
+      border: 1px solid rgba(255,255,255,.10);
+      border-radius:14px;
+      padding:12px 12px;
+      color:var(--text);
+      outline:none;
+      width:100%;
+      transition:.15s ease;
+    }
+    .field:focus{
+      border-color: rgba(124,58,237,.65);
+      box-shadow: 0 0 0 4px rgba(124,58,237,.15);
+    }
+    textarea.field{ min-height: 92px; resize: vertical; }
 
-.resultado{
- min-height:260px;
- background:#020617;
- padding:15px;
- border-radius:12px;
-}
+    .rowActions{
+      display:flex; flex-wrap:wrap; gap:10px;
+      margin-top: 6px;
+    }
+    .btn{
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      padding:11px 14px;
+      border-radius:14px;
+      cursor:pointer;
+      font-weight:700;
+      font-size:13px;
+      transition:.15s ease;
+      user-select:none;
+    }
+    .btn:hover{ transform: translateY(-1px); }
+    .btn:active{ transform: translateY(0px); }
+    .btnPrimary{
+      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(124,58,237,.65));
+      border-color: rgba(124,58,237,.55);
+      box-shadow: 0 12px 30px rgba(124,58,237,.20);
+    }
+    .btnSecondary{
+      background: rgba(34,197,94,.10);
+      border-color: rgba(34,197,94,.30);
+    }
+    .btnGhost{
+      background: transparent;
+    }
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      transform:none !important;
+    }
 
-.footer{
- margin-top:20px;
- font-size:13px;
- opacity:.7;
-}
-</style>
+    .hint{
+      margin-top: 10px;
+      font-size:12px;
+      color:var(--muted);
+      line-height:1.35;
+    }
+    .hint b{ color:var(--text); }
+
+    /* Output */
+    .outputTop{
+      display:flex; align-items:center; justify-content:space-between; gap:10px;
+      padding:16px 16px 0;
+    }
+    .status{
+      display:flex; align-items:center; gap:8px;
+      font-size:12px; color:var(--muted);
+    }
+    .badge{
+      display:inline-flex; align-items:center;
+      padding:6px 10px; border-radius:999px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      font-size:12px;
+      color:var(--muted);
+      white-space:nowrap;
+    }
+    .badge.err{ border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.10); color: #fecaca; }
+    .badge.ok{ border-color: rgba(34,197,94,.35); background: rgba(34,197,94,.10); color: #bbf7d0; }
+
+    .outputBox{
+      margin:14px 16px 16px;
+      background: rgba(5,8,22,.70);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding:12px;
+    }
+    .output{
+      width:100%;
+      min-height: 360px;
+      border:none;
+      outline:none;
+      background: transparent;
+      color: var(--text);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size:12.5px;
+      line-height:1.55;
+      resize: vertical;
+    }
+
+    .footer{
+      margin-top:18px;
+      text-align:center;
+      font-size:12px;
+      color:var(--muted);
+      opacity:.9;
+    }
+    .link{
+      color:#c4b5fd;
+      text-decoration:none;
+      border-bottom:1px dashed rgba(196,181,253,.55);
+    }
+  </style>
 </head>
 
 <body>
+  <div class="wrap">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">IA</div>
+        <div style="min-width:0">
+          <h1>Gerador de Prompts — IA Operacional 30D</h1>
+          <p>Gere prompts de “IA especialista” (copiar e colar). Feito para uso prático e sem hype.</p>
+        </div>
+      </div>
+      <div class="pill">
+        <span class="dot"></span>
+        <span>Exclusivo para alunos</span>
+      </div>
+    </div>
 
-<div class="container">
+    <div class="grid">
+      <!-- CARD INPUTS -->
+      <section class="card">
+        <div class="cardHead">
+          <div>
+            <h2 class="cardTitle">Inputs do Sistema (pilares)</h2>
+            <p class="cardSub">Quanto melhor o input, melhor o prompt. Preencha direto ao ponto.</p>
+          </div>
+          <span class="badge">v1 (MVP)</span>
+        </div>
 
-<div class="header">
-<h2>🤖 Gerador de Prompts – IA Operacional 30D</h2>
-<div class="badge">Exclusivo para alunos</div>
-</div>
+        <div class="cardBody">
+          <div class="form two">
+            <div class="span2">
+              <label for="nicho">Nicho</label>
+              <input id="nicho" class="field" placeholder="Ex: Vídeos TikTok com IA / eBooks com IA / Receitas fitness" />
+            </div>
 
-<div class="grid">
+            <div class="span2">
+              <label for="objetivo">Objetivo operacional</label>
+              <input id="objetivo" class="field" placeholder="Ex: criar 30 roteiros curtos + plano de postagem para 7 dias" />
+            </div>
 
-<div class="card">
+            <div>
+              <label for="publico">Público</label>
+              <input id="publico" class="field" placeholder="Ex: iniciantes" />
+            </div>
 
-<!-- FORM (substitua os 4 inputs atuais por estes) -->
-<input id="nicho" placeholder="Nicho (ex: Vídeos TikTok com IA / eBooks com IA)">
-<input id="objetivo" placeholder="Objetivo operacional (ex: 30 roteiros curtos para 7 dias)">
-<input id="publico" placeholder="Público (ex: iniciantes)">
-<input id="formato" placeholder="Formato de saída (ex: tabela com hook, roteiro, CTA)">
+            <div>
+              <label for="nivel">Nível do usuário</label>
+              <select id="nivel" class="field">
+                <option value="">Selecione…</option>
+                <option value="iniciante">Iniciante</option>
+                <option value="intermediário">Intermediário</option>
+                <option value="avançado">Avançado</option>
+              </select>
+            </div>
 
-<input id="nivel" placeholder="Nível do usuário (iniciante / intermediário / avançado)">
-<input id="papelIA" placeholder="Papel da IA (ex: Estrategista de conteúdo TikTok para afiliados low ticket)">
+            <div class="span2">
+              <label for="formato">Formato de saída</label>
+              <input id="formato" class="field" placeholder="Ex: tabela com Hook / Script / CTA / Duração (20–40s)" />
+            </div>
 
-<input id="tom" placeholder="Tom (opcional: direto / neutro / amigável)">
+            <div class="span2">
+              <label for="papelIA">Papel da IA (especialista)</label>
+              <input id="papelIA" class="field" placeholder="Ex: Estrategista de conteúdo TikTok focado em conversão para low ticket" />
+            </div>
 
-<input id="restricoes" placeholder="Restrições (ex: sem hype; baixo orçamento; passo a passo; 1ª semana)" style="margin-bottom:16px;">
+            <div class="span2">
+              <label for="restricoes">Restrições (obrigatórias)</label>
+              <textarea id="restricoes" class="field" placeholder="Ex: sem prometer dinheiro; linguagem simples; passo a passo; baixo orçamento; sem termos técnicos."></textarea>
+            </div>
 
+            <div class="span2">
+              <label for="tom">Tom (opcional)</label>
+              <input id="tom" class="field" placeholder="Ex: direto / amigável / técnico (se vazio: direto e prático)" />
+            </div>
+          </div>
 
-<button class="gerar" onclick="gerar()">Gerar prompt</button>
-<button class="copiar" onclick="copiar()">Copiar</button>
+          <div class="rowActions">
+            <button class="btn btnPrimary" id="btnGerar">Gerar prompt</button>
+            <button class="btn btnSecondary" id="btnCopiar" disabled>Copiar</button>
+            <button class="btn btnGhost" id="btnLimpar">Limpar</button>
+          </div>
 
-<div class="footer">
-Sem promessas irreais. Sistema focado em execução.
-</div>
+          <div class="hint">
+            Dica: se quiser prompt <b>mais forte</b>, aumente “Restrições” e seja específico no “Formato”.
+          </div>
+        </div>
+      </section>
 
-</div>
+      <!-- CARD OUTPUT -->
+      <section class="card">
+        <div class="outputTop">
+          <div>
+            <h2 class="cardTitle" style="margin:0;">Prompt gerado</h2>
+            <div class="status" id="statusLine">Pronto para gerar.</div>
+          </div>
+          <span class="badge" id="badgeStatus">Aguardando</span>
+        </div>
 
-<div class="card">
-<div class="resultado" id="resultado">
-Resultado aparecerá aqui…
-</div>
-</div>
+        <div class="outputBox">
+          <textarea id="saida" class="output" readonly>O prompt vai aparecer aqui…</textarea>
+        </div>
 
-</div>
-</div>
+        <div class="cardBody" style="padding-top:0;">
+          <div class="hint" style="margin-top:0;">
+            Copie e cole no ChatGPT. Se quiser iterar, altere apenas 1 pilar por vez (ex: “Formato”).
+          </div>
+          <div class="footer">
+            Suporte: <a class="link" href="mailto:suporte@metodoia30d.com">suporte@metodoia30d.com</a>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
 
-<script>
-  // 1) URL do seu backend (novo Web Service do Render)
-  const API_BASE = "https://prompt-api-7999.onrender.com"; // ex: "https://prompt-api-abc.onrender.com"
+  <script>
+    // ====== CONFIG ======
+    const API_BASE = "https://prompt-api-7999.onrender.com"; // ajuste se mudar
+    const INTERNAL_API_KEY = "ia30d_prompt_2026";   // MVP (depois vamos remover do front)
 
-  // 2) Chave interna (MVP / teste). Depois vamos tirar isso do front.
-  const INTERNAL_API_KEY = "ia30d_prompt_2026";
+    // ====== HELPERS ======
+    const $ = (id) => document.getElementById(id);
+    const btnGerar = $("btnGerar");
+    const btnCopiar = $("btnCopiar");
+    const btnLimpar = $("btnLimpar");
+    const saida = $("saida");
+    const badge = $("badgeStatus");
+    const statusLine = $("statusLine");
 
-  async function gerar(){
-    const nicho = document.getElementById("nicho").value.trim();
-const objetivo = document.getElementById("objetivo").value.trim();
-const publico = document.getElementById("publico").value.trim();
-const formato = document.getElementById("formato").value.trim();
-const nivel = document.getElementById("nivel").value.trim();
-const restricoes = document.getElementById("restricoes").value.trim();
-const papelIA = document.getElementById("papelIA").value.trim();
+    function setStatus(type, text){
+      statusLine.textContent = text;
+      badge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : "");
+      badge.textContent =
+        type === "loading" ? "Gerando…" :
+        type === "ok" ? "Gerado" :
+        type === "err" ? "Erro" : "Aguardando";
+    }
 
-if (!nicho || !objetivo || !publico || !formato || !nivel || !restricoes || !papelIA) {
-  saida.textContent =
-    "Preencha: Nicho, Objetivo, Público, Formato, Nível, Restrições e Papel da IA.";
-  return;
-}
+    function getPayload(){
+      const nicho = $("nicho").value.trim();
+      const objetivo = $("objetivo").value.trim();
+      const publico = $("publico").value.trim();
+      const formato = $("formato").value.trim();
+      const nivel = $("nivel").value.trim();
+      const restricoes = $("restricoes").value.trim();
+      const papelIA = $("papelIA").value.trim();
+      const tom = $("tom").value.trim();
 
+      return { nicho, objetivo, publico, formato, nivel, restricoes, papelIA, tom };
+    }
 
-    try {
-      const res = await fetch(API_BASE + "/api/prompt", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": "Bearer " + INTERNAL_API_KEY
-        },
-       body: JSON.stringify({
-  nicho: document.getElementById("nicho").value.trim(),
-  objetivo: document.getElementById("objetivo").value.trim(),
-  publico: document.getElementById("publico").value.trim(),
-  formato: document.getElementById("formato").value.trim(),
-  nivel: document.getElementById("nivel").value.trim(),
-  restricoes: document.getElementById("restricoes").value.trim(),
-  papelIA: document.getElementById("papelIA").value.trim(),
-  tom: document.getElementById("tom").value.trim()
-})
-      });
+    function validate(p){
+      if (!p.nicho || !p.objetivo || !p.publico || !p.formato || !p.nivel || !p.restricoes || !p.papelIA) {
+        return "Preencha: Nicho, Objetivo, Público, Formato, Nível, Restrições e Papel da IA.";
+      }
+      return null;
+    }
 
-      const data = await res.json();
-      if (!res.ok) {
-        resultado.innerText = "Erro: " + (data?.error || "falha no servidor");
+    // ====== ACTIONS ======
+    btnGerar.onclick = async () => {
+      const payload = getPayload();
+      const err = validate(payload);
+
+      btnCopiar.disabled = true;
+
+      if (err){
+        saida.value = err;
+        setStatus("err", err);
         return;
       }
 
-      resultado.innerText = data.prompt || "(sem resposta)";
-    } catch (e) {
-      resultado.innerText = "Erro de conexão com o servidor. Verifique API_BASE e o deploy no Render.";
-    }
-  }
+      btnGerar.disabled = true;
+      setStatus("loading", "Gerando prompt…");
+      saida.value = "Gerando…";
 
-  function copiar(){
-    const texto = document.getElementById("resultado").innerText || "";
-    if (!texto || texto.startsWith("Erro") || texto === "Gerando...") return;
-    navigator.clipboard.writeText(texto);
-    alert("Copiado!");
-  }
-</script>
+      try{
+        const r = await fetch(API_BASE + "/api/prompt", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + INTERNAL_API_KEY
+          },
+          body: JSON.stringify(payload)
+        });
 
+        const data = await r.json().catch(() => ({}));
 
+        if (!r.ok){
+          const msg = (data && (data.detail || data.error)) ? (data.detail || data.error) : ("HTTP " + r.status);
+          saida.value = "Erro ao gerar: " + msg;
+          setStatus("err", "Erro ao gerar: " + msg);
+          return;
+        }
+
+        saida.value = data.prompt || "(sem resposta)";
+        setStatus("ok", "Prompt gerado com sucesso.");
+        btnCopiar.disabled = !(data.prompt && data.prompt.length > 5);
+      } catch(e){
+        saida.value = "Erro de conexão com o servidor.";
+        setStatus("err", "Erro de conexão com o servidor.");
+      } finally{
+        btnGerar.disabled = false;
+      }
+    };
+
+    btnCopiar.onclick = async () => {
+      const text = (saida.value || "").trim();
+      if (!text || text.startsWith("Erro")) return;
+
+      await navigator.clipboard.writeText(text);
+      const old = btnCopiar.textContent;
+      btnCopiar.textContent = "Copiado ✓";
+      setTimeout(() => btnCopiar.textContent = old, 900);
+    };
+
+    btnLimpar.onclick = () => {
+      ["nicho","objetivo","publico","formato","nivel","restricoes","papelIA","tom"].forEach(id => $(id).value = "");
+      saida.value = "O prompt vai aparecer aqui…";
+      btnCopiar.disabled = true;
+      setStatus("idle", "Pronto para gerar.");
+    };
+
+    // default status
+    setStatus("idle", "Pronto para gerar.");
+  </script>
 </body>
 </html>
