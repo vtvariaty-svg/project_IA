@@ -96,10 +96,19 @@ button{
 
 <div class="card">
 
-<input id="tema" placeholder="Tema (ex: criar vídeos TikTok com IA)">
-<input id="objetivo" placeholder="Objetivo (ex: criar 30 roteiros)">
+<!-- FORM (substitua os 4 inputs atuais por estes) -->
+<input id="nicho" placeholder="Nicho (ex: Vídeos TikTok com IA / eBooks com IA)">
+<input id="objetivo" placeholder="Objetivo operacional (ex: 30 roteiros curtos para 7 dias)">
 <input id="publico" placeholder="Público (ex: iniciantes)">
-<input id="formato" placeholder="Formato (ex: lista de roteiros + passo a passo)">
+<input id="formato" placeholder="Formato de saída (ex: tabela com hook, roteiro, CTA)">
+
+<input id="nivel" placeholder="Nível do usuário (iniciante / intermediário / avançado)">
+<input id="papelIA" placeholder="Papel da IA (ex: Estrategista de conteúdo TikTok para afiliados low ticket)">
+
+<input id="tom" placeholder="Tom (opcional: direto / neutro / amigável)">
+
+<input id="restricoes" placeholder="Restrições (ex: sem hype; baixo orçamento; passo a passo; 1ª semana)" style="margin-bottom:16px;">
+
 
 <button class="gerar" onclick="gerar()">Gerar prompt</button>
 <button class="copiar" onclick="copiar()">Copiar</button>
@@ -147,7 +156,16 @@ Resultado aparecerá aqui…
           "Content-Type": "application/json",
           "Authorization": "Bearer " + INTERNAL_API_KEY
         },
-        body: JSON.stringify({ tema, objetivo, publico, formato })
+       body: JSON.stringify({
+  nicho: document.getElementById("nicho").value.trim(),
+  objetivo: document.getElementById("objetivo").value.trim(),
+  publico: document.getElementById("publico").value.trim(),
+  formato: document.getElementById("formato").value.trim(),
+  nivel: document.getElementById("nivel").value.trim(),
+  restricoes: document.getElementById("restricoes").value.trim(),
+  papelIA: document.getElementById("papelIA").value.trim(),
+  tom: document.getElementById("tom").value.trim()
+})
       });
 
       const data = await res.json();
