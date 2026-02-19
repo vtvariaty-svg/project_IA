@@ -19,9 +19,10 @@
       --line:rgba(255,255,255,.10);
       --shadow: 0 18px 55px rgba(0,0,0,.40);
       --radius: 18px;
-      --accent: #7c3aed; /* roxo */
-      --accent2:#22c55e; /* verde */
+      --accent: #7c3aed;
+      --accent2:#22c55e;
       --danger:#ef4444;
+      --warn:#f59e0b;
     }
 
     *{ box-sizing:border-box; }
@@ -36,9 +37,8 @@
       min-height:100vh;
     }
 
-    .wrap{ max-width:1100px; margin:0 auto; padding:22px 16px 40px; }
+    .wrap{ max-width:1200px; margin:0 auto; padding:22px 16px 40px; }
 
-    /* Topbar */
     .topbar{
       display:flex; align-items:center; justify-content:space-between;
       gap:12px; margin-bottom:16px;
@@ -66,15 +66,16 @@
     }
     .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent2); }
 
-    /* Layout */
     .grid{
       display:grid;
       grid-template-columns: 1fr;
       gap:14px;
       margin-top:12px;
     }
-    @media (min-width: 980px){
-      .grid{ grid-template-columns: 1.05fr .95fr; gap:16px; }
+
+    /* 3 colunas no desktop: Inputs | Output | Histórico  */
+    @media (min-width: 1100px){
+      .grid{ grid-template-columns: 1.05fr 1fr .72fr; gap:16px; }
     }
 
     .card{
@@ -84,6 +85,7 @@
       box-shadow: var(--shadow);
       backdrop-filter: blur(10px);
       overflow:hidden;
+      min-height: 100px;
     }
     .cardHead{
       padding:16px 16px 0;
@@ -93,7 +95,6 @@
     .cardSub{ margin:6px 0 0; font-size:12px; color:var(--muted); }
     .cardBody{ padding:16px; }
 
-    /* Form */
     .form{
       display:grid;
       grid-template-columns: 1fr;
@@ -153,6 +154,10 @@
       background: rgba(34,197,94,.10);
       border-color: rgba(34,197,94,.30);
     }
+    .btnDanger{
+      background: rgba(239,68,68,.10);
+      border-color: rgba(239,68,68,.30);
+    }
     .btnGhost{
       background: transparent;
     }
@@ -190,6 +195,7 @@
     }
     .badge.err{ border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.10); color: #fecaca; }
     .badge.ok{ border-color: rgba(34,197,94,.35); background: rgba(34,197,94,.10); color: #bbf7d0; }
+    .badge.loading{ border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.10); color: #fde68a; }
 
     .outputBox{
       margin:14px 16px 16px;
@@ -209,6 +215,49 @@
       font-size:12.5px;
       line-height:1.55;
       resize: vertical;
+    }
+
+    /* History */
+    .historyTopActions{
+      display:flex; gap:10px; flex-wrap:wrap;
+      padding:12px 16px 0;
+    }
+    .historyList{
+      padding:12px 16px 16px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      max-height: 560px;
+      overflow:auto;
+    }
+    @media (max-width: 1099px){
+      .historyList{ max-height: 360px; }
+    }
+
+    .item{
+      background: rgba(5,8,22,.55);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding:12px;
+    }
+    .itemTitle{
+      font-size:12.5px;
+      font-weight:700;
+      margin:0 0 6px;
+      line-height:1.25;
+    }
+    .itemMeta{
+      font-size:11px;
+      color:var(--muted);
+      margin:0 0 10px;
+    }
+    .itemBtns{
+      display:flex; gap:8px; flex-wrap:wrap;
+    }
+    .miniBtn{
+      padding:8px 10px;
+      border-radius:12px;
+      font-size:12px;
     }
 
     .footer{
@@ -243,14 +292,14 @@
     </div>
 
     <div class="grid">
-      <!-- CARD INPUTS -->
+      <!-- INPUTS -->
       <section class="card">
         <div class="cardHead">
           <div>
             <h2 class="cardTitle">Inputs do Sistema (pilares)</h2>
             <p class="cardSub">Quanto melhor o input, melhor o prompt. Preencha direto ao ponto.</p>
           </div>
-          <span class="badge">v1 (MVP)</span>
+          <span class="badge">v1</span>
         </div>
 
         <div class="cardBody">
@@ -313,7 +362,7 @@
         </div>
       </section>
 
-      <!-- CARD OUTPUT -->
+      <!-- OUTPUT -->
       <section class="card">
         <div class="outputTop">
           <div>
@@ -336,13 +385,71 @@
           </div>
         </div>
       </section>
+
+      <!-- HISTÓRICO -->
+      <section class="card">
+        <div class="cardHead">
+          <div>
+            <h2 class="cardTitle">Histórico</h2>
+            <p class="cardSub">Fica salvo neste dispositivo (localStorage).</p>
+          </div>
+          <span class="badge" id="historyCount">0</span>
+        </div>
+
+        <div class="historyTopActions">
+          <button class="btn miniBtn btnGhost" id="btnRefreshHistory">Atualizar</button>
+          <button class="btn miniBtn btnDanger" id="btnClearHistory">Limpar histórico</button>
+        </div>
+
+        <div class="historyList" id="historyList">
+          <!-- itens via JS -->
+        </div>
+      </section>
+
     </div>
   </div>
 
   <script>
     // ====== CONFIG ======
     const API_BASE = "https://prompt-api-7999.onrender.com"; // ajuste se mudar
-    const INTERNAL_API_KEY = "ia30d_prompt_2026";   // MVP (depois vamos remover do front)
+    const INTERNAL_API_KEY = "SUA_INTERNAL_API_KEY_AQUI";   // MVP (depois vamos remover do front)
+
+    // ====== STORAGE ======
+    const HISTORY_KEY = "ia30d_prompt_history_v1";
+    const HISTORY_LIMIT = 30;
+
+    function loadHistory(){
+      try{
+        const raw = localStorage.getItem(HISTORY_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return Array.isArray(arr) ? arr : [];
+      }catch{
+        return [];
+      }
+    }
+
+    function saveHistory(arr){
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(arr));
+    }
+
+    function addToHistory(entry){
+      const arr = loadHistory();
+      arr.unshift(entry);
+      const sliced = arr.slice(0, HISTORY_LIMIT);
+      saveHistory(sliced);
+      return sliced;
+    }
+
+    function removeFromHistory(id){
+      const arr = loadHistory().filter(x => x.id !== id);
+      saveHistory(arr);
+      return arr;
+    }
+
+    function clearHistory(){
+      localStorage.removeItem(HISTORY_KEY);
+      return [];
+    }
 
     // ====== HELPERS ======
     const $ = (id) => document.getElementById(id);
@@ -353,26 +460,47 @@
     const badge = $("badgeStatus");
     const statusLine = $("statusLine");
 
+    const historyList = $("historyList");
+    const historyCount = $("historyCount");
+    const btnRefreshHistory = $("btnRefreshHistory");
+    const btnClearHistory = $("btnClearHistory");
+
     function setStatus(type, text){
       statusLine.textContent = text;
-      badge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : "");
+      badge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : type === "loading" ? " loading" : "");
       badge.textContent =
         type === "loading" ? "Gerando…" :
         type === "ok" ? "Gerado" :
         type === "err" ? "Erro" : "Aguardando";
     }
 
-    function getPayload(){
-      const nicho = $("nicho").value.trim();
-      const objetivo = $("objetivo").value.trim();
-      const publico = $("publico").value.trim();
-      const formato = $("formato").value.trim();
-      const nivel = $("nivel").value.trim();
-      const restricoes = $("restricoes").value.trim();
-      const papelIA = $("papelIA").value.trim();
-      const tom = $("tom").value.trim();
+    function nowLabel(ts){
+      try{
+        const d = new Date(ts);
+        return d.toLocaleString("pt-BR", { dateStyle:"short", timeStyle:"short" });
+      }catch{
+        return "";
+      }
+    }
 
-      return { nicho, objetivo, publico, formato, nivel, restricoes, papelIA, tom };
+    function makeTitle(p){
+      const a = (p.nicho || "").trim();
+      const b = (p.objetivo || "").trim();
+      const t = (a ? a : "Prompt") + (b ? " — " + b : "");
+      return t.length > 72 ? t.slice(0,72) + "…" : t;
+    }
+
+    function getPayload(){
+      return {
+        nicho: $("nicho").value.trim(),
+        objetivo: $("objetivo").value.trim(),
+        publico: $("publico").value.trim(),
+        formato: $("formato").value.trim(),
+        nivel: $("nivel").value.trim(),
+        restricoes: $("restricoes").value.trim(),
+        papelIA: $("papelIA").value.trim(),
+        tom: $("tom").value.trim(),
+      };
     }
 
     function validate(p){
@@ -381,6 +509,95 @@
       }
       return null;
     }
+
+    function fillForm(payload){
+      $("nicho").value = payload.nicho || "";
+      $("objetivo").value = payload.objetivo || "";
+      $("publico").value = payload.publico || "";
+      $("formato").value = payload.formato || "";
+      $("nivel").value = payload.nivel || "";
+      $("restricoes").value = payload.restricoes || "";
+      $("papelIA").value = payload.papelIA || "";
+      $("tom").value = payload.tom || "";
+    }
+
+    async function copyText(text){
+      const t = (text || "").trim();
+      if (!t) return;
+      await navigator.clipboard.writeText(t);
+    }
+
+    // ====== HISTORY UI ======
+    function renderHistory(){
+      const arr = loadHistory();
+      historyCount.textContent = String(arr.length);
+
+      if (!arr.length){
+        historyList.innerHTML = `
+          <div style="padding:10px 2px; color: var(--muted); font-size:12px; line-height:1.4;">
+            Nenhum prompt salvo ainda.<br/>Gere um prompt e ele aparecerá aqui.
+          </div>
+        `;
+        return;
+      }
+
+      historyList.innerHTML = arr.map(item => `
+        <div class="item">
+          <div class="itemTitle">${escapeHtml(item.title || "Prompt")}</div>
+          <div class="itemMeta">${escapeHtml(nowLabel(item.ts))}</div>
+          <div class="itemBtns">
+            <button class="btn miniBtn btnGhost" data-act="open" data-id="${item.id}">Abrir</button>
+            <button class="btn miniBtn btnSecondary" data-act="copy" data-id="${item.id}">Copiar</button>
+            <button class="btn miniBtn btnDanger" data-act="del" data-id="${item.id}">Excluir</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function escapeHtml(s){
+      return String(s || "")
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+    }
+
+    historyList.addEventListener("click", async (e) => {
+      const btn = e.target.closest("button[data-act]");
+      if (!btn) return;
+      const act = btn.getAttribute("data-act");
+      const id = btn.getAttribute("data-id");
+      const arr = loadHistory();
+      const item = arr.find(x => x.id === id);
+      if (!item) return;
+
+      if (act === "open"){
+        fillForm(item.payload || {});
+        saida.value = item.prompt || "(vazio)";
+        btnCopiar.disabled = !(item.prompt && item.prompt.length > 5);
+        setStatus("ok", "Prompt carregado do histórico.");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      if (act === "copy"){
+        await copyText(item.prompt || "");
+        btn.textContent = "Copiado ✓";
+        setTimeout(()=> btn.textContent = "Copiar", 800);
+      }
+
+      if (act === "del"){
+        removeFromHistory(id);
+        renderHistory();
+      }
+    });
+
+    btnRefreshHistory.onclick = () => renderHistory();
+    btnClearHistory.onclick = () => {
+      if (!confirm("Tem certeza que deseja apagar todo o histórico deste dispositivo?")) return;
+      clearHistory();
+      renderHistory();
+    };
 
     // ====== ACTIONS ======
     btnGerar.onclick = async () => {
@@ -418,9 +635,21 @@
           return;
         }
 
-        saida.value = data.prompt || "(sem resposta)";
+        const prompt = data.prompt || "(sem resposta)";
+        saida.value = prompt;
         setStatus("ok", "Prompt gerado com sucesso.");
-        btnCopiar.disabled = !(data.prompt && data.prompt.length > 5);
+        btnCopiar.disabled = !(prompt && prompt.length > 5);
+
+        // salvar no histórico
+        addToHistory({
+          id: crypto.randomUUID ? crypto.randomUUID() : String(Date.now()) + "_" + Math.random().toString(16).slice(2),
+          ts: Date.now(),
+          title: makeTitle(payload),
+          payload,
+          prompt
+        });
+        renderHistory();
+
       } catch(e){
         saida.value = "Erro de conexão com o servidor.";
         setStatus("err", "Erro de conexão com o servidor.");
@@ -433,7 +662,7 @@
       const text = (saida.value || "").trim();
       if (!text || text.startsWith("Erro")) return;
 
-      await navigator.clipboard.writeText(text);
+      await copyText(text);
       const old = btnCopiar.textContent;
       btnCopiar.textContent = "Copiado ✓";
       setTimeout(() => btnCopiar.textContent = old, 900);
@@ -446,8 +675,9 @@
       setStatus("idle", "Pronto para gerar.");
     };
 
-    // default status
+    // init
     setStatus("idle", "Pronto para gerar.");
+    renderHistory();
   </script>
 </body>
 </html>
