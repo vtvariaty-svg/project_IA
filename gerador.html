@@ -136,18 +136,20 @@ Resultado aparecerá aqui…
   const INTERNAL_API_KEY = "ia30d_prompt_2026";
 
   async function gerar(){
-    const resultado = document.getElementById("resultado");
-    resultado.innerText = "Gerando...";
+    const nicho = document.getElementById("nicho").value.trim();
+const objetivo = document.getElementById("objetivo").value.trim();
+const publico = document.getElementById("publico").value.trim();
+const formato = document.getElementById("formato").value.trim();
+const nivel = document.getElementById("nivel").value.trim();
+const restricoes = document.getElementById("restricoes").value.trim();
+const papelIA = document.getElementById("papelIA").value.trim();
 
-    const tema = document.getElementById("tema").value.trim();
-    const objetivo = document.getElementById("objetivo").value.trim();
-    const publico = document.getElementById("publico").value.trim();
-    const formato = document.getElementById("formato").value.trim();
+if (!nicho || !objetivo || !publico || !formato || !nivel || !restricoes || !papelIA) {
+  saida.textContent =
+    "Preencha: Nicho, Objetivo, Público, Formato, Nível, Restrições e Papel da IA.";
+  return;
+}
 
-    if (!tema || !objetivo || !publico || !formato) {
-      resultado.innerText = "Preencha todos os campos (Tema, Objetivo, Público e Formato).";
-      return;
-    }
 
     try {
       const res = await fetch(API_BASE + "/api/prompt", {
