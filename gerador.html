@@ -433,6 +433,10 @@
     const historyCount = $("historyCount");
     const btnRefreshHistory = $("btnRefreshHistory");
     const btnClearHistory = $("btnClearHistory");
+    
+    function isLogged(){
+  return !!localStorage.getItem("ia30d_jwt_v1");
+}
 
     function setStatus(type, text){
       statusLine.textContent = text;
@@ -482,13 +486,6 @@
         "Authorization": "Bearer " + t
       };
     }
-    btnChatSend.onclick = () => {
-  if (!isLogged()){
-    alert("Faça login primeiro.");
-    return;
-  }
-  sendChat();
-};
 
     async function copyText(text){
       const t = (text || "").trim();
@@ -625,11 +622,11 @@
       }
     };
 
-    btnLogout.onclick = () => {
-      clearToken();
-      showLoggedOut();
-    };
-
+        btnLogout.onclick = () => {
+        clearToken();
+        showLoggedOut();
+        chatBox.innerHTML = "";
+        };
     // ===== HISTORY (JWT) =====
     async function fetchHistory(limit=50){
       const r = await fetch(API_BASE + "/api/history?limit=" + encodeURIComponent(String(limit)), {
@@ -942,8 +939,14 @@
         chatInput.focus();
       }
     }
-
-    btnChatSend.onclick = () => sendChat();
+            btnChatSend.onclick = () => {
+            if (!isLogged()){
+                alert("Faça login primeiro.");
+                return;
+            }
+            sendChat();
+            };
+                
     chatInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey){
         e.preventDefault();
@@ -991,11 +994,12 @@
       } else {
         showLoggedOut();
       }
+      if (!isLogged()){
+  chatBox.innerHTML = "<div style='opacity:0.6'>Faça login para usar o Chat IA.</div>";
+}
     })();
 
-    function isLogged(){
-  return !!localStorage.getItem("ia30d_jwt_v1");
-}
+    
   </script>
 </body>
 </html>
