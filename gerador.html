@@ -354,7 +354,7 @@
       </section>
 
       <div>
-        <section class="card">
+        <section class="card" id="appArea" style="display:none">
           <div class="cardHead">
             <div>
               <h2 class="cardTitle">Chat IA</h2>
@@ -482,6 +482,13 @@
         "Authorization": "Bearer " + t
       };
     }
+    btnChatSend.onclick = () => {
+  if (!isLogged()){
+    alert("Faça login primeiro.");
+    return;
+  }
+  sendChat();
+};
 
     async function copyText(text){
       const t = (text || "").trim();
@@ -985,6 +992,10 @@
         showLoggedOut();
       }
     })();
+
+    function isLogged(){
+  return !!localStorage.getItem("ia30d_jwt_v1");
+}
   </script>
 </body>
 </html>
