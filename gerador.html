@@ -395,8 +395,8 @@
                 <input class="field" id="publico" placeholder="Ex: Jovens CLT"/>
               </div>
               <div>
-                <label>Formato de saída</label>
-                <input class="field" id="formato" placeholder="Ex: Estrutura planner + bônus checklist"/>
+                <label>Meta</label>
+                <input class="field" id="meta" placeholder="Ex: Estrutura planner + bônus checklist"/>
               </div>
               
             
@@ -577,7 +577,7 @@
         nicho: $("nicho").value.trim(),
         objetivo: $("objetivo").value.trim(),
         publico: $("publico").value.trim(),
-        formato: $("formato").value.trim(),
+        formato: $("meta").value.trim(),
         nivel: $("nivel").value.trim(),
         restricoes: $("restricoes").value.trim(),
         papelIA: $("papelIA").value.trim(),
@@ -586,7 +586,7 @@
     }
 
     function validate(p){
-      if (!p.nicho || !p.objetivo || !p.publico || !p.formato || !p.nivel || !p.restricoes || !p.papelIA) {
+      if (!p.nicho || !p.objetivo || !p.publico || !p.meta || !p.nivel || !p.restricoes || !p.papelIA) {
         return "Preencha: Nicho, Objetivo, Público, Formato, Nível, Restrições e Papel da IA.";
       }
       return null;
@@ -596,7 +596,7 @@
       $("nicho").value = payload.nicho || "";
       $("objetivo").value = payload.objetivo || "";
       $("publico").value = payload.publico || "";
-      $("formato").value = payload.formato || "";
+      $("meta").value = payload.formato || "";
       $("nivel").value = payload.nivel || "";
       $("restricoes").value = payload.restricoes || "";
       $("papelIA").value = payload.papelIA || "";
