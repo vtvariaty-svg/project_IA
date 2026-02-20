@@ -187,12 +187,36 @@
     };
   }
 
+  async function probeHealth(){
+    // tenta /health, se falhar tenta /
+    const base = apiBase();
+
+    try{
+      log("Testando /health...");
+      const r = await fetch(base + "/health", { method:"GET" });
+      const data = await r.json().catch(()=> ({}));
+      log("health => " + JSON.stringify(data));
+      if (data && data.ok === true) return true;
+      // se respondeu JSON mas ok != true, ainda assim seguimos para o teste admin
+      log("Aviso: /health não retornou ok=true (seguindo teste admin).");
+      return true;
+    }catch(e){
+      log("Aviso: /health indisponível (seguindo teste em /).");
+    }
+
+    try{
+      log("Testando / ...");
+      const r = await fetch(base + "/", { method:"GET" });
+      const data = await r.json().catch(()=> ({}));
+      log("/ => " + JSON.stringify(data));
+      return true;
+    }catch(e){
+      throw new Error("Backend não responde em /health nem em /");
+    }
+  }
+
   async function test(){
-    log("Testando /health...");
-    const r = await fetch(apiBase() + "/health");
-    const data = await r.json().catch(()=> ({}));
-    log("health => " + JSON.stringify(data));
-    if (!data.ok) throw new Error("Health não ok");
+    await probeHealth();
 
     log("Testando /admin/users (autorização)...");
     const r2 = await fetch(apiBase() + "/admin/users?limit=1", { headers: adminHeaders() });
@@ -283,14 +307,17 @@
 
   $("btnCreate").onclick = async () => {
     try{
-      const email = $("newEmail").value.trim();
+      const email = $("newEmail").value.trim().toLowerCase();
       const password = $("newPass").value;
       if (!email || !password) return alert("Preencha email e senha");
+      if (password.length < 6) return alert("Senha mínima: 6");
+
       const r = await fetch(apiBase() + "/admin/users", {
         method:"POST",
         headers: adminHeaders(),
         body: JSON.stringify({ email, password })
       });
+
       const data = await r.json().catch(()=> ({}));
       if (!r.ok) throw new Error(data.error || ("HTTP " + r.status));
       log("Usuário criado: " + email);
@@ -306,14 +333,17 @@
 
   $("btnReset").onclick = async () => {
     try{
-      const email = $("resetEmail").value.trim();
+      const email = $("resetEmail").value.trim().toLowerCase();
       const new_password = $("resetPass").value;
       if (!email || !new_password) return alert("Preencha email e nova senha");
+      if (new_password.length < 6) return alert("Senha mínima: 6");
+
       const r = await fetch(apiBase() + "/admin/users/reset", {
         method:"POST",
         headers: adminHeaders(),
         body: JSON.stringify({ email, new_password })
       });
+
       const data = await r.json().catch(()=> ({}));
       if (!r.ok) throw new Error(data.error || ("HTTP " + r.status));
       log("Senha resetada: " + email);
@@ -356,7 +386,6 @@
     }
   });
 
-  // Auto: se já tiver chave na sessão, tenta só atualizar lista após testar manualmente
   if (sessionStorage.getItem("ADMIN_KEY")) {
     log("ADMIN_KEY encontrada na sessão. Clique em 'Testar' para validar.");
   }
