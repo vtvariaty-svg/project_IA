@@ -286,6 +286,55 @@ textarea.field:-webkit-autofill:focus{
 .card{
   width: 100%;
 }
+/* ===== iPhone / mobile polish ===== */
+@media (max-width: 520px){
+  .topbar{
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 12px;
+  }
+
+  .brand{
+    width: 100%;
+  }
+
+  .btxt b{
+    font-size: 14px;
+  }
+
+  .btxt span{
+    font-size: 11px;
+    line-height: 1.25;
+    max-width: 100%;
+  }
+
+  /* linha direita (Deslogado + Sair + badge) */
+  .topbar .row{
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  /* evita “estourar” pro lado */
+  .pill{
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* cards com padding melhor no mobile */
+  .cardHead{ padding: 14px 14px 12px; }
+  .cardBody{ padding: 14px; }
+
+  /* botões maiores e com quebra boa */
+  .btn{
+    width: auto;
+    padding: 12px 14px;
+  }
+
+  /* login fields */
+  .loginRow > *{ min-width: 100%; }
+}
   </style>
 </head>
 <body>
@@ -302,7 +351,7 @@ textarea.field:-webkit-autofill:focus{
       <div class="row">
         <span class="pill" id="pillText"><strong>Deslogado</strong><span style="opacity:.7">•</span><span>faça login</span></span>
         <button class="btn btnGhost" id="btnLogout" style="display:none">Sair</button>
-        <span class="badge" id="authBadge">Auth: —</span>
+        <span class="badge" id="authBadge" style="display:none">Auth: —</span>
       </div>
     </div>
 
