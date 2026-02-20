@@ -894,7 +894,7 @@
     };
 
     btnLimpar.onclick = () => {
-      ["nicho","objetivo","publico","formato","nivel","restricoes","papelIA","tom"].forEach(id => $(id).value = "");
+      ["nicho","objetivo","publico","meta"].forEach(id => $(id).value = "");
       saida.value = "O prompt vai aparecer aqui…";
       btnCopiar.disabled = true;
       setStatus("idle", "Pronto para gerar.");
