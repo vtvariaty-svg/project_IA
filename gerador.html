@@ -381,7 +381,7 @@
           </div>
         </section>
 
-        <section class="card" style="margin-top:16px">
+        <section class="card" id="appArea" style="display:none">
           <div class="cardHead">
             <div>
               <h2 class="cardTitle">Histórico</h2>
@@ -997,6 +997,11 @@
       if (!isLogged()){
   chatBox.innerHTML = "<div style='opacity:0.6'>Faça login para usar o Chat IA.</div>";
 }
+if (!localStorage.getItem("ia30d_jwt_v1")){
+   document.getElementById("historyList").innerHTML =
+      "<div style='opacity:0.6'>Faça login para ver o histórico.</div>";
+}
+
     })();
 
     
