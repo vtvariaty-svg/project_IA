@@ -35,12 +35,14 @@
       min-height:100vh;
     }
     a{ color:inherit; text-decoration:none; }
+
     .wrap{
-  width: 100%;
-  max-width: 1140px;
-  margin: 0 auto;
-  padding: 26px 16px 54px;
-}
+      width: 100%;
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 26px 16px 54px;
+    }
+
     .topbar{
       display:flex; align-items:center; justify-content:space-between; gap:14px;
       padding:14px 16px; border:1px solid var(--line); border-radius:18px;
@@ -90,14 +92,16 @@
       gap:16px; margin-top:16px;
     }
     .grid.oneCol{
-  grid-template-columns: 1fr !important;
-}
+      grid-template-columns: 1fr !important;
+    }
+
     @media (max-width: 980px){
       .grid{ grid-template-columns: 1fr; }
       .topbar{ position:static; }
     }
 
     .card{
+      width:100%;
       border:1px solid var(--line);
       border-radius: var(--radius);
       background: rgba(255,255,255,.03);
@@ -238,103 +242,70 @@
     }
 
     /* ===== Fix inputs (Chrome / mobile) ===== */
-.field{
-  color: var(--text) !important;
-  background: rgba(255,255,255,.03) !important;
-  -webkit-text-fill-color: var(--text) !important;
-}
+    .field{
+      color: var(--text) !important;
+      background: rgba(255,255,255,.03) !important;
+      -webkit-text-fill-color: var(--text) !important;
+    }
+    .field::placeholder{
+      color: rgba(154,164,178,.75) !important;
+    }
+    input.field:-webkit-autofill,
+    input.field:-webkit-autofill:hover,
+    input.field:-webkit-autofill:focus,
+    textarea.field:-webkit-autofill,
+    textarea.field:-webkit-autofill:hover,
+    textarea.field:-webkit-autofill:focus{
+      -webkit-text-fill-color: var(--text) !important;
+      caret-color: var(--text) !important;
+      transition: background-color 999999s ease-in-out 0s;
+      box-shadow: 0 0 0px 1000px rgba(255,255,255,.03) inset !important;
+      border: 1px solid var(--line) !important;
+    }
+    .field:focus{
+      outline: none;
+      border-color: rgba(124,58,237,.55) !important;
+      box-shadow: 0 0 0 3px rgba(124,58,237,.18);
+    }
 
-/* placeholder visível */
-.field::placeholder{
-  color: rgba(154,164,178,.75) !important; /* --muted com mais contraste */
-}
+    /* ===== Mobile layout fix ===== */
+    @media (max-width: 980px){
+      .topbar{
+        position: static !important;
+        backdrop-filter: none !important;
+      }
+      .wrap{ padding-top: 16px; }
+    }
 
-/* autofill do Chrome (fica branco/amarelo se não tratar) */
-input.field:-webkit-autofill,
-input.field:-webkit-autofill:hover,
-input.field:-webkit-autofill:focus,
-textarea.field:-webkit-autofill,
-textarea.field:-webkit-autofill:hover,
-textarea.field:-webkit-autofill:focus{
-  -webkit-text-fill-color: var(--text) !important;
-  caret-color: var(--text) !important;
-  transition: background-color 999999s ease-in-out 0s;
-  box-shadow: 0 0 0px 1000px rgba(255,255,255,.03) inset !important;
-  border: 1px solid var(--line) !important;
-}
-
-/* foco: não deixa o browser "clarear" o campo */
-.field:focus{
-  outline: none;
-  border-color: rgba(124,58,237,.55) !important;
-  box-shadow: 0 0 0 3px rgba(124,58,237,.18);
-}
-/* ===== Mobile layout fix ===== */
-@media (max-width: 980px){
-  .topbar{
-    position: static !important;   /* sticky no mobile quebra fácil */
-    backdrop-filter: none !important;
-  }
-  .wrap{
-    padding-top: 16px;
-  }
-}
-/* Evita espaço vazio e garante cards 100% */
-.grid.oneCol{
-  grid-template-columns: 1fr !important;
-}
-.card{
-  width: 100%;
-}
-/* ===== iPhone / mobile polish ===== */
-@media (max-width: 520px){
-  .topbar{
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 10px;
-    padding: 12px 12px;
-  }
-
-  .brand{
-    width: 100%;
-  }
-
-  .btxt b{
-    font-size: 14px;
-  }
-
-  .btxt span{
-    font-size: 11px;
-    line-height: 1.25;
-    max-width: 100%;
-  }
-
-  /* linha direita (Deslogado + Sair + badge) */
-  .topbar .row{
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  /* evita “estourar” pro lado */
-  .pill{
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  /* cards com padding melhor no mobile */
-  .cardHead{ padding: 14px 14px 12px; }
-  .cardBody{ padding: 14px; }
-
-  /* botões maiores e com quebra boa */
-  .btn{
-    width: auto;
-    padding: 12px 14px;
-  }
-
-  /* login fields */
-  .loginRow > *{ min-width: 100%; }
-}
+    /* ===== iPhone / mobile polish ===== */
+    @media (max-width: 520px){
+      .topbar{
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+        padding: 12px 12px;
+      }
+      .brand{ width: 100%; }
+      .btxt b{ font-size: 14px; }
+      .btxt span{
+        font-size: 11px;
+        line-height: 1.25;
+        max-width: 100%;
+      }
+      .topbar .row{
+        width: 100%;
+        justify-content: space-between;
+      }
+      .pill{
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .cardHead{ padding: 14px 14px 12px; }
+      .cardBody{ padding: 14px; }
+      .btn{ width: auto; padding: 12px 14px; }
+      .loginRow > *{ min-width: 100%; }
+    }
   </style>
 </head>
 <body>
@@ -397,71 +368,73 @@ textarea.field:-webkit-autofill:focus{
         </div>
       </section>
 
-      <!-- APP -->
-      <section class="card" id="appArea" style="display:none">
-        <div class="cardHead">
-          <div>
-            <h2 class="cardTitle">Gerador de Prompt (STRICT_MODE=1)</h2>
-            <p class="cardSub">Preencha os campos. O prompt final é salvo no histórico (Neon).</p>
-          </div>
-          <span class="badge" id="badgeStatus">Aguardando</span>
-        </div>
-
-        <div class="cardBody">
-          <div class="formGrid">
+      <!-- APP CONTAINER (ÚNICO) -->
+      <div id="appArea" style="display:none">
+        <!-- CARD 1: GERADOR -->
+        <section class="card">
+          <div class="cardHead">
             <div>
-              <label>Nicho / Tema</label>
-              <input class="field" id="nicho" placeholder="Ex: Controle financeiro simples"/>
+              <h2 class="cardTitle">Gerador de Prompt (STRICT_MODE=1)</h2>
+              <p class="cardSub">Preencha os campos. O prompt final é salvo no histórico (Neon).</p>
             </div>
-            <div>
-              <label>Objetivo</label>
-              <input class="field" id="objetivo" placeholder="Ex: Criar planner financeiro vendável"/>
-            </div>
-            <div>
-              <label>Público</label>
-              <input class="field" id="publico" placeholder="Ex: Jovens CLT"/>
-            </div>
-            <div>
-              <label>Formato de saída</label>
-              <input class="field" id="formato" placeholder="Ex: Estrutura planner + bônus checklist"/>
-            </div>
-            <div>
-              <label>Nível do público</label>
-              <input class="field" id="nivel" placeholder="Ex: iniciante"/>
-            </div>
-            <div>
-              <label>Tom</label>
-              <input class="field" id="tom" placeholder="Ex: direto"/>
-            </div>
+            <span class="badge" id="badgeStatus">Aguardando</span>
           </div>
 
-          <div style="margin-top:12px">
-            <label>Restrições</label>
-            <textarea class="field" id="restricoes" placeholder="Ex: frases curtas, sem teoria, passos práticos"></textarea>
+          <div class="cardBody">
+            <div class="formGrid">
+              <div>
+                <label>Nicho / Tema</label>
+                <input class="field" id="nicho" placeholder="Ex: Controle financeiro simples"/>
+              </div>
+              <div>
+                <label>Objetivo</label>
+                <input class="field" id="objetivo" placeholder="Ex: Criar planner financeiro vendável"/>
+              </div>
+              <div>
+                <label>Público</label>
+                <input class="field" id="publico" placeholder="Ex: Jovens CLT"/>
+              </div>
+              <div>
+                <label>Formato de saída</label>
+                <input class="field" id="formato" placeholder="Ex: Estrutura planner + bônus checklist"/>
+              </div>
+              <div>
+                <label>Nível do público</label>
+                <input class="field" id="nivel" placeholder="Ex: iniciante"/>
+              </div>
+              <div>
+                <label>Tom</label>
+                <input class="field" id="tom" placeholder="Ex: direto"/>
+              </div>
+            </div>
+
+            <div style="margin-top:12px">
+              <label>Restrições</label>
+              <textarea class="field" id="restricoes" placeholder="Ex: frases curtas, sem teoria, passos práticos"></textarea>
+            </div>
+
+            <div style="margin-top:12px">
+              <label>Papel da IA</label>
+              <input class="field" id="papelIA" placeholder="Ex: IA ESPECIALISTA PRODUTO DIGITAL"/>
+            </div>
+
+            <div class="actions">
+              <button class="btn btnPrimary" id="btnGerar">Gerar Prompt</button>
+              <button class="btn" id="btnCopiar" disabled>Copiar</button>
+              <button class="btn btnGhost" id="btnLimpar">Limpar</button>
+            </div>
+
+            <div class="miniHelp" id="statusLine">Status: —</div>
+
+            <div style="margin-top:12px">
+              <label>Saída</label>
+              <textarea class="output" id="saida">O prompt vai aparecer aqui…</textarea>
+            </div>
           </div>
+        </section>
 
-          <div style="margin-top:12px">
-            <label>Papel da IA</label>
-            <input class="field" id="papelIA" placeholder="Ex: IA ESPECIALISTA PRODUTO DIGITAL"/>
-          </div>
-
-          <div class="actions">
-            <button class="btn btnPrimary" id="btnGerar">Gerar Prompt</button>
-            <button class="btn" id="btnCopiar" disabled>Copiar</button>
-            <button class="btn btnGhost" id="btnLimpar">Limpar</button>
-          </div>
-
-          <div class="miniHelp" id="statusLine">Status: —</div>
-
-          <div style="margin-top:12px">
-            <label>Saída</label>
-            <textarea class="output" id="saida">O prompt vai aparecer aqui…</textarea>
-          </div>
-        </div>
-      </section>
-
-      <div>
-        <section class="card" id="appArea" style="display:none">
+        <!-- CARD 2: CHAT -->
+        <section class="card" style="margin-top:16px">
           <div class="cardHead">
             <div>
               <h2 class="cardTitle">Chat IA</h2>
@@ -488,11 +461,12 @@ textarea.field:-webkit-autofill:focus{
           </div>
         </section>
 
-        <section class="card" id="appArea" style="display:none">
+        <!-- CARD 3: HISTÓRICO -->
+        <section class="card" style="margin-top:16px">
           <div class="cardHead">
             <div>
               <h2 class="cardTitle">Histórico</h2>
-              <p class="cardSub">Prompts gerados e salvos no Neon. Você pode abrir, copiar ou excluir. O histórico é do seu dispositivo.</p>
+              <p class="cardSub">Prompts gerados e salvos no Neon. Você pode abrir, copiar ou excluir.</p>
             </div>
             <span class="badge" id="historyCount">0</span>
           </div>
@@ -541,10 +515,19 @@ textarea.field:-webkit-autofill:focus{
     const historyCount = $("historyCount");
     const btnRefreshHistory = $("btnRefreshHistory");
     const btnClearHistory = $("btnClearHistory");
-    
+
+    // ===== CHAT (JWT) =====
+    const chatBox = $("chatBox");
+    const chatInput = $("chatInput");
+    const btnChatSend = $("btnChatSend");
+    const btnChatLoad = $("btnChatLoad");
+    const btnChatClear = $("btnChatClear");
+    const chatStatusLine = $("chatStatusLine");
+    const chatUsageChip = $("chatUsageChip");
+
     function isLogged(){
-  return !!localStorage.getItem("ia30d_jwt_v1");
-}
+      return !!localStorage.getItem(TOKEN_KEY);
+    }
 
     function setStatus(type, text){
       statusLine.textContent = text;
@@ -637,7 +620,7 @@ textarea.field:-webkit-autofill:focus{
       appArea.style.display = "";
       btnLogout.style.display = "";
       pillText.innerHTML = `<strong>${escapeHtml(email)}</strong><span style="opacity:.7">•</span><span>logado</span>`;
-      setAuthBadge("ok", "Auth: OK");
+      setAuthBadge("ok", "Auth: OK"); // oculto no CSS inline
       mainGrid.classList.remove("oneCol");
     }
 
@@ -646,8 +629,13 @@ textarea.field:-webkit-autofill:focus{
       appArea.style.display = "none";
       btnLogout.style.display = "none";
       pillText.innerHTML = `<strong>Deslogado</strong><span style="opacity:.7">•</span><span>faça login</span>`;
-      setAuthBadge("err", "Auth: OFF");
+      setAuthBadge("err", "Auth: OFF"); // oculto no CSS inline
       mainGrid.classList.add("oneCol");
+
+      // mensagens “placeholder”
+      chatBox.innerHTML = "<div style='opacity:0.6'>Faça login para usar o Chat IA.</div>";
+      historyList.innerHTML = "<div style='opacity:0.6'>Faça login para ver o histórico.</div>";
+      historyCount.textContent = "0";
     }
 
     // ===== AUTH FLOW =====
@@ -701,6 +689,8 @@ textarea.field:-webkit-autofill:focus{
         setLoginBadge("ok", "Logado ✓");
         await renderHistory();
         await refreshChatUsage();
+        // opcional: carregar histórico do chat automaticamente
+        await loadChatHistory(50).catch(()=>{});
       }catch(e){
         setLoginBadge("err", "Erro");
         alert("Login falhou: " + (e?.message || "unknown"));
@@ -724,6 +714,7 @@ textarea.field:-webkit-autofill:focus{
         setLoginBadge("ok", "Conta criada ✓");
         await renderHistory();
         await refreshChatUsage();
+        await loadChatHistory(50).catch(()=>{});
       }catch(e){
         setLoginBadge("err", "Erro");
         alert("Signup falhou: " + (e?.message || "unknown"));
@@ -732,11 +723,11 @@ textarea.field:-webkit-autofill:focus{
       }
     };
 
-        btnLogout.onclick = () => {
-        clearToken();
-        showLoggedOut();
-        chatBox.innerHTML = "";
-        };
+    btnLogout.onclick = () => {
+      clearToken();
+      showLoggedOut();
+    };
+
     // ===== HISTORY (JWT) =====
     async function fetchHistory(limit=50){
       const r = await fetch(API_BASE + "/api/history?limit=" + encodeURIComponent(String(limit)), {
@@ -928,14 +919,6 @@ textarea.field:-webkit-autofill:focus{
     };
 
     // ===== CHAT (JWT) =====
-    const chatBox = $("chatBox");
-    const chatInput = $("chatInput");
-    const btnChatSend = $("btnChatSend");
-    const btnChatLoad = $("btnChatLoad");
-    const btnChatClear = $("btnChatClear");
-    const chatStatusLine = $("chatStatusLine");
-    const chatUsageChip = $("chatUsageChip");
-
     function chatStatus(text){
       chatStatusLine.textContent = "Status: " + text;
     }
@@ -1006,6 +989,11 @@ textarea.field:-webkit-autofill:focus{
     }
 
     async function sendChat(){
+      if (!isLogged()) {
+        alert("Faça login primeiro.");
+        return;
+      }
+
       const text = (chatInput.value || "").trim();
       if (!text) return;
 
@@ -1049,22 +1037,22 @@ textarea.field:-webkit-autofill:focus{
         chatInput.focus();
       }
     }
-            btnChatSend.onclick = () => {
-            if (!isLogged()){
-                alert("Faça login primeiro.");
-                return;
-            }
-            sendChat();
-            };
-                
+
+    btnChatSend.onclick = () => sendChat();
+
     chatInput.addEventListener("keydown", (e) => {
       if (e.key === "Enter" && !e.shiftKey){
         e.preventDefault();
+        if (!isLogged()) {
+          alert("Faça login primeiro.");
+          return;
+        }
         sendChat();
       }
     });
 
     btnChatLoad.onclick = async () => {
+      if (!isLogged()) return alert("Faça login primeiro.");
       btnChatLoad.disabled = true;
       try{
         chatStatus("carregando histórico…");
@@ -1079,6 +1067,7 @@ textarea.field:-webkit-autofill:focus{
     };
 
     btnChatClear.onclick = async () => {
+      if (!isLogged()) return alert("Faça login primeiro.");
       if (!confirm("Apagar TODO o histórico do chat da sua conta?")) return;
       btnChatClear.disabled = true;
       try{
@@ -1101,20 +1090,11 @@ textarea.field:-webkit-autofill:focus{
         showLogged(me.email);
         await renderHistory();
         await refreshChatUsage();
+        await loadChatHistory(50).catch(()=>{});
       } else {
         showLoggedOut();
       }
-      if (!isLogged()){
-  chatBox.innerHTML = "<div style='opacity:0.6'>Faça login para usar o Chat IA.</div>";
-}
-if (!localStorage.getItem("ia30d_jwt_v1")){
-   document.getElementById("historyList").innerHTML =
-      "<div style='opacity:0.6'>Faça login para ver o histórico.</div>";
-}
-
     })();
-
-    
   </script>
 </body>
 </html>
