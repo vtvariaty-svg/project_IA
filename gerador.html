@@ -34,405 +34,368 @@
         linear-gradient(180deg, var(--bg0), var(--bg1));
       min-height:100vh;
     }
-
-    .wrap{ max-width:1200px; margin:0 auto; padding:22px 16px 40px; }
-
+    a{ color:inherit; text-decoration:none; }
+    .wrap{ max-width:1140px; margin:0 auto; padding:26px 16px 54px; }
     .topbar{
-      display:flex; align-items:center; justify-content:space-between;
-      gap:12px; margin-bottom:16px;
-      flex-wrap:wrap;
+      display:flex; align-items:center; justify-content:space-between; gap:14px;
+      padding:14px 16px; border:1px solid var(--line); border-radius:18px;
+      background:rgba(255,255,255,.03); box-shadow:var(--shadow);
+      position:sticky; top:14px; backdrop-filter: blur(10px);
+      z-index:5;
     }
-    .brand{ display:flex; align-items:center; gap:12px; min-width:0; }
+    .brand{ display:flex; gap:12px; align-items:center; }
     .logo{
       width:42px; height:42px; border-radius:14px;
-      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(34,197,94,.75));
-      display:grid; place-items:center;
-      box-shadow: 0 10px 35px rgba(124,58,237,.25);
-      flex:0 0 auto;
-      font-weight:800;
-    }
-    .brand h1{ margin:0; font-size:16px; line-height:1.2; }
-    .brand p{ margin:4px 0 0; color:var(--muted); font-size:12px; }
-
-    .pill{
-      display:inline-flex; align-items:center; gap:8px;
-      padding:8px 12px; border-radius:999px;
-      background: rgba(255,255,255,.06);
+      background: radial-gradient(circle at 25% 25%, rgba(124,58,237,.9), rgba(34,197,94,.25) 55%, rgba(255,255,255,.05) 75%);
       border:1px solid var(--line);
+      box-shadow: 0 14px 40px rgba(0,0,0,.35);
+    }
+    .btxt b{ display:block; font-size:14px; letter-spacing:.2px; }
+    .btxt span{ display:block; color:var(--muted); font-size:12px; margin-top:2px; }
+
+    .row{ display:flex; gap:10px; align-items:center; }
+    .pill{
+      padding:8px 10px;
+      border:1px solid var(--line);
+      border-radius:999px;
+      background:rgba(255,255,255,.03);
       color:var(--muted);
       font-size:12px;
+      display:inline-flex; gap:8px; align-items:center;
       white-space:nowrap;
     }
-    .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent2); }
+    .pill strong{ color:var(--text); font-weight:600; }
+    .btn{
+      appearance:none; border:1px solid var(--line);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px; border-radius:12px;
+      cursor:pointer; font-weight:600;
+      transition:.15s transform, .15s background;
+      box-shadow: 0 12px 35px rgba(0,0,0,.28);
+    }
+    .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.06); }
+    .btn:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
+    .btnPrimary{ border-color: rgba(124,58,237,.55); background: rgba(124,58,237,.18); }
+    .btnDanger{ border-color: rgba(239,68,68,.55); background: rgba(239,68,68,.14); }
+    .btnGhost{ background:transparent; box-shadow:none; }
 
     .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-      margin-top:12px;
+      display:grid; grid-template-columns: 1.12fr .88fr;
+      gap:16px; margin-top:16px;
     }
-    @media (min-width: 1100px){
-      .grid{ grid-template-columns: 1.05fr 1fr .72fr; gap:16px; }
+    @media (max-width: 980px){
+      .grid{ grid-template-columns: 1fr; }
+      .topbar{ position:static; }
     }
 
     .card{
-      background: rgba(14,23,48,.72);
-      border: 1px solid rgba(255,255,255,.10);
+      border:1px solid var(--line);
       border-radius: var(--radius);
+      background: rgba(255,255,255,.03);
       box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
       overflow:hidden;
-      min-height: 100px;
     }
     .cardHead{
-      padding:16px 16px 0;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:10px;
+      padding:16px 16px 14px;
+      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
+      border-bottom:1px solid var(--line);
     }
-    .cardTitle{ margin:0; font-size:14px; letter-spacing:.2px; }
-    .cardSub{ margin:6px 0 0; font-size:12px; color:var(--muted); }
+    .cardTitle{ margin:0; font-size:15px; }
+    .cardSub{ margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.35; }
     .cardBody{ padding:16px; }
-
-    .form{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:12px;
-    }
-    @media (min-width: 650px){
-      .form.two{ grid-template-columns: 1fr 1fr; }
-      .span2{ grid-column: 1 / -1; }
-    }
 
     label{ display:block; font-size:12px; color:var(--muted); margin:0 0 6px; }
     .field{
-      background: rgba(5,8,22,.60);
-      border: 1px solid rgba(255,255,255,.10);
-      border-radius:14px;
-      padding:12px 12px;
+      width:100%; padding:12px 12px;
+      border-radius:14px; border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
       color:var(--text);
       outline:none;
-      width:100%;
-      transition:.15s ease;
     }
-    .field:focus{
-      border-color: rgba(124,58,237,.65);
-      box-shadow: 0 0 0 4px rgba(124,58,237,.15);
-    }
-    textarea.field{ min-height: 92px; resize: vertical; }
+    textarea.field{ min-height:92px; resize:vertical; }
+    .formGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
+    @media (max-width: 680px){ .formGrid{ grid-template-columns:1fr; } }
+    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
 
-    .rowActions{ display:flex; flex-wrap:wrap; gap:10px; margin-top: 6px; }
-    .btn{
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      color:var(--text);
-      padding:11px 14px;
-      border-radius:14px;
-      cursor:pointer;
-      font-weight:700;
-      font-size:13px;
-      transition:.15s ease;
-      user-select:none;
-    }
-    .btn:hover{ transform: translateY(-1px); }
-    .btn:active{ transform: translateY(0px); }
-    .btnPrimary{
-      background: linear-gradient(135deg, rgba(124,58,237,.95), rgba(124,58,237,.65));
-      border-color: rgba(124,58,237,.55);
-      box-shadow: 0 12px 30px rgba(124,58,237,.20);
-    }
-    .btnSecondary{
-      background: rgba(34,197,94,.10);
-      border-color: rgba(34,197,94,.30);
-    }
-    .btnDanger{
-      background: rgba(239,68,68,.10);
-      border-color: rgba(239,68,68,.30);
-    }
-    .btnGhost{ background: transparent; }
-    .btn:disabled{ opacity:.55; cursor:not-allowed; transform:none !important; }
-
-    .hint{
-      margin-top: 10px;
-      font-size:12px;
-      color:var(--muted);
-      line-height:1.35;
-    }
-    .hint b{ color:var(--text); }
-
-    .outputTop{
-      display:flex; align-items:center; justify-content:space-between; gap:10px;
-      padding:16px 16px 0;
-    }
-    .status{ display:flex; align-items:center; gap:8px; font-size:12px; color:var(--muted); }
     .badge{
-      display:inline-flex; align-items:center;
-      padding:6px 10px; border-radius:999px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.06);
-      font-size:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
       color:var(--muted);
+      padding:8px 10px;
+      font-size:12px;
+      border-radius:999px;
       white-space:nowrap;
+      align-self:flex-start;
     }
-    .badge.err{ border-color: rgba(239,68,68,.35); background: rgba(239,68,68,.10); color: #fecaca; }
-    .badge.ok{ border-color: rgba(34,197,94,.35); background: rgba(34,197,94,.10); color: #bbf7d0; }
-    .badge.loading{ border-color: rgba(245,158,11,.35); background: rgba(245,158,11,.10); color: #fde68a; }
+    .badge.ok{ border-color: rgba(34,197,94,.55); color:#bff7d6; background:rgba(34,197,94,.10); }
+    .badge.err{ border-color: rgba(239,68,68,.55); color:#ffd1d1; background:rgba(239,68,68,.10); }
+    .badge.loading{ border-color: rgba(245,158,11,.55); color:#ffe7bf; background:rgba(245,158,11,.08); }
 
-    .outputBox{
-      margin:14px 16px 16px;
-      background: rgba(5,8,22,.70);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 14px;
-      padding:12px;
-    }
     .output{
       width:100%;
-      min-height: 340px;
-      border:none;
-      outline:none;
-      background: transparent;
+      min-height: 290px;
+      border-radius: 14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.03);
       color: var(--text);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size:12.5px;
-      line-height:1.55;
+      padding: 12px 12px;
+      line-height: 1.35;
+      white-space: pre-wrap;
       resize: vertical;
+      outline:none;
     }
+    .miniHelp{ font-size:12px; color:var(--muted); margin-top:10px; line-height:1.35; }
 
-    .historyTopActions{ display:flex; gap:10px; flex-wrap:wrap; padding:12px 16px 0; }
-    .historyList{
-      padding:12px 16px 16px;
-      display:flex; flex-direction:column; gap:10px;
-      max-height: 560px;
+    .loginBox{
+      display:flex; flex-direction:column; gap:12px;
+    }
+    .loginRow{ display:flex; gap:10px; flex-wrap:wrap; }
+    .loginRow > *{ flex:1; min-width: 220px; }
+    .splitLine{ height:1px; background: var(--line); margin:6px 0; }
+
+    .historyList{ display:flex; flex-direction:column; gap:10px; padding-top:10px; }
+    .histItem{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.02);
+      border-radius:14px;
+      padding:12px;
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+    }
+    .histMeta{ display:flex; flex-direction:column; gap:4px; }
+    .histMeta b{ font-size:13px; }
+    .histMeta span{ font-size:12px; color:var(--muted); }
+    .histBtns{ display:flex; gap:8px; align-items:flex-start; }
+    .miniBtn{ padding:8px 10px; border-radius:10px; font-size:12px; box-shadow:none; }
+    .historyTopActions{ display:flex; gap:10px; flex-wrap:wrap; padding-top:10px; }
+
+    /* ===== Chat ===== */
+    .chatWrap{ display:flex; flex-direction:column; gap:10px; }
+    .chatBox{
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      border-radius:14px;
+      padding:12px;
+      height:360px;
       overflow:auto;
     }
-    @media (max-width: 1099px){ .historyList{ max-height: 360px; } }
-
-    .item{
-      background: rgba(5,8,22,.55);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius: 14px;
-      padding:12px;
-    }
-    .itemTitle{ font-size:12.5px; font-weight:700; margin:0 0 6px; line-height:1.25; }
-    .itemMeta{ font-size:11px; color:var(--muted); margin:0 0 10px; }
-    .itemBtns{ display:flex; gap:8px; flex-wrap:wrap; }
-    .miniBtn{ padding:8px 10px; border-radius:12px; font-size:12px; }
-
-    .footer{
-      margin-top:18px;
-      text-align:center;
-      font-size:12px;
-      color:var(--muted);
-      opacity:.9;
-    }
-    .link{
-      color:#c4b5fd;
-      text-decoration:none;
-      border-bottom:1px dashed rgba(196,181,253,.55);
-    }
-
-    /* Login */
-    .loginWrap{ max-width:520px; margin: 26px auto 0; }
-    .splitRow{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; justify-content:flex-end; }
-    .hidden{ display:none !important; }
-
-    .notice{
-      margin-top:10px;
-      padding:12px;
+    .msg{ display:flex; margin:10px 0; }
+    .msg .bubble{
+      max-width:85%;
+      padding:10px 12px;
       border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.04);
-      color: var(--muted);
+      border:1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+      white-space:pre-wrap;
+      word-wrap:break-word;
+      line-height:1.35;
+      font-size:14px;
+    }
+    .msg.user{ justify-content:flex-end; }
+    .msg.user .bubble{ background:rgba(124,58,237,.18); }
+    .msg.ai{ justify-content:flex-start; }
+    .msg.ai .bubble{ background:rgba(34,197,94,.10); }
+    .chatRow{ display:flex; gap:10px; }
+    .chatRow textarea{
+      flex:1;
+      min-height:46px;
+      max-height:140px;
+      resize:vertical;
+      padding:12px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      outline:none;
+    }
+    .chatMeta{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+    .chip{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:8px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--muted);
       font-size:12px;
-      line-height:1.4;
     }
   </style>
 </head>
-
 <body>
   <div class="wrap">
     <div class="topbar">
       <div class="brand">
-        <div class="logo">IA</div>
-        <div style="min-width:0">
-          <h1>Gerador de Prompts — IA Operacional 30D</h1>
-          <p>Área exclusiva. Faça login para usar o gerador e salvar seu histórico.</p>
+        <div class="logo"></div>
+        <div class="btxt">
+          <b>IA Operacional 30D</b>
+          <span>Gerador de Prompts + Chat IA (JWT + Neon)</span>
         </div>
       </div>
 
-      <div class="splitRow">
-        <div class="pill" id="pillAuth">
-          <span class="dot"></span>
-          <span id="pillText">Deslogado</span>
-        </div>
-        <button class="btn btnGhost hidden" id="btnLogout">Sair</button>
+      <div class="row">
+        <span class="pill" id="pillText"><strong>Deslogado</strong><span style="opacity:.7">•</span><span>faça login</span></span>
+        <button class="btn btnGhost" id="btnLogout" style="display:none">Sair</button>
+        <span class="badge" id="authBadge">Auth: —</span>
       </div>
     </div>
 
-    <!-- LOGIN -->
-    <div class="loginWrap" id="loginArea">
-      <section class="card">
+    <div class="grid">
+      <!-- LOGIN -->
+      <section class="card" id="loginArea">
         <div class="cardHead">
           <div>
             <h2 class="cardTitle">Login</h2>
-            <p class="cardSub">Entre com seu e-mail e senha para acessar o gerador.</p>
+            <p class="cardSub">Acesso por conta (JWT). O código de cadastro é liberado por você.</p>
           </div>
-          <span class="badge" id="authBadge">Aguardando</span>
+          <span class="badge" id="loginBadge">—</span>
         </div>
 
         <div class="cardBody">
-          <div class="form">
-            <div>
-              <label for="loginEmail">Email</label>
-              <input id="loginEmail" class="field" placeholder="seuemail@..." autocomplete="email" />
+          <div class="loginBox">
+            <div class="loginRow">
+              <div>
+                <label>E-mail</label>
+                <input class="field" id="loginEmail" placeholder="seu@email.com" autocomplete="email"/>
+              </div>
+              <div>
+                <label>Senha</label>
+                <input class="field" id="loginPass" placeholder="••••••••" type="password" autocomplete="current-password"/>
+              </div>
             </div>
 
             <div>
-              <label for="loginPass">Senha</label>
-              <input id="loginPass" class="field" type="password" placeholder="••••••••" autocomplete="current-password" />
+              <label>Código de cadastro (signup code)</label>
+              <input class="field" id="signupCode" placeholder="código que você definiu no backend"/>
             </div>
 
-            <div class="rowActions">
+            <div class="actions">
               <button class="btn btnPrimary" id="btnLogin">Entrar</button>
+              <button class="btn" id="btnSignup">Criar conta</button>
             </div>
 
-            <div class="notice">
-              <b>Primeiro acesso?</b><br/>
-              Crie sua conta abaixo usando o <b>código de ativação</b> (entregue no curso).
-            </div>
-
-            <hr style="border:none;border-top:1px solid var(--line); margin:14px 0;">
-
-            <h2 class="cardTitle" style="margin:0 0 10px;">Criar conta (1ª vez)</h2>
-
-            <div>
-              <label for="signupCode">Código de ativação</label>
-              <input id="signupCode" class="field" placeholder="Ex: IA30D-ALUNO-2026" autocomplete="off" />
-            </div>
-
-            <div class="rowActions">
-              <button class="btn btnSecondary" id="btnSignup">Criar conta</button>
-            </div>
-
-            <div class="hint">
-              Dica: use uma senha com no mínimo <b>6 caracteres</b>.
+            <div class="splitLine"></div>
+            <div class="miniHelp">
+              Dica: o token fica salvo no seu navegador (localStorage). Se trocar de PC/navegador, precisa logar de novo.
             </div>
           </div>
         </div>
       </section>
-    </div>
 
-    <!-- APP -->
-    <div id="appArea" class="hidden">
-      <div class="grid">
-        <!-- INPUTS -->
+      <!-- APP -->
+      <section class="card" id="appArea" style="display:none">
+        <div class="cardHead">
+          <div>
+            <h2 class="cardTitle">Gerador de Prompt (STRICT_MODE=1)</h2>
+            <p class="cardSub">Preencha os campos. O prompt final é salvo no histórico (Neon).</p>
+          </div>
+          <span class="badge" id="badgeStatus">Aguardando</span>
+        </div>
+
+        <div class="cardBody">
+          <div class="formGrid">
+            <div>
+              <label>Nicho / Tema</label>
+              <input class="field" id="nicho" placeholder="Ex: Controle financeiro simples"/>
+            </div>
+            <div>
+              <label>Objetivo</label>
+              <input class="field" id="objetivo" placeholder="Ex: Criar planner financeiro vendável"/>
+            </div>
+            <div>
+              <label>Público</label>
+              <input class="field" id="publico" placeholder="Ex: Jovens CLT"/>
+            </div>
+            <div>
+              <label>Formato de saída</label>
+              <input class="field" id="formato" placeholder="Ex: Estrutura planner + bônus checklist"/>
+            </div>
+            <div>
+              <label>Nível do público</label>
+              <input class="field" id="nivel" placeholder="Ex: iniciante"/>
+            </div>
+            <div>
+              <label>Tom</label>
+              <input class="field" id="tom" placeholder="Ex: direto"/>
+            </div>
+          </div>
+
+          <div style="margin-top:12px">
+            <label>Restrições</label>
+            <textarea class="field" id="restricoes" placeholder="Ex: frases curtas, sem teoria, passos práticos"></textarea>
+          </div>
+
+          <div style="margin-top:12px">
+            <label>Papel da IA</label>
+            <input class="field" id="papelIA" placeholder="Ex: IA ESPECIALISTA PRODUTO DIGITAL"/>
+          </div>
+
+          <div class="actions">
+            <button class="btn btnPrimary" id="btnGerar">Gerar Prompt</button>
+            <button class="btn" id="btnCopiar" disabled>Copiar</button>
+            <button class="btn btnGhost" id="btnLimpar">Limpar</button>
+          </div>
+
+          <div class="miniHelp" id="statusLine">Status: —</div>
+
+          <div style="margin-top:12px">
+            <label>Saída</label>
+            <textarea class="output" id="saida">O prompt vai aparecer aqui…</textarea>
+          </div>
+        </div>
+      </section>
+
+      <div>
         <section class="card">
           <div class="cardHead">
             <div>
-              <h2 class="cardTitle">Inputs do Sistema (pilares)</h2>
-              <p class="cardSub">Quanto melhor o input, melhor o prompt. Preencha direto ao ponto.</p>
+              <h2 class="cardTitle">Chat IA</h2>
+              <p class="cardSub">Converse com a IA dentro da plataforma. Histórico fica salvo no Neon e o limite diário controla custo.</p>
             </div>
-            <span class="badge">vJWT</span>
+            <div class="chatMeta">
+              <span class="chip" id="chatUsageChip">Carregando limite…</span>
+              <div class="row" style="gap:10px">
+                <button class="btn miniBtn btnGhost" id="btnChatLoad">Carregar histórico</button>
+                <button class="btn miniBtn btnDanger" id="btnChatClear">Limpar chat</button>
+              </div>
+            </div>
           </div>
 
-          <div class="cardBody">
-            <div class="form two">
-              <div class="span2">
-                <label for="nicho">Nicho</label>
-                <input id="nicho" class="field" placeholder="Ex: Vídeos TikTok com IA / eBooks com IA / Receitas fitness" />
-              </div>
+          <div class="chatWrap" style="padding:16px">
+            <div class="chatBox" id="chatBox" aria-live="polite"></div>
 
-              <div class="span2">
-                <label for="objetivo">Objetivo operacional</label>
-                <input id="objetivo" class="field" placeholder="Ex: criar 30 roteiros curtos + plano de postagem para 7 dias" />
-              </div>
-
-              <div>
-                <label for="publico">Público</label>
-                <input id="publico" class="field" placeholder="Ex: iniciantes" />
-              </div>
-
-              <div>
-                <label for="nivel">Nível do usuário</label>
-                <select id="nivel" class="field">
-                  <option value="">Selecione…</option>
-                  <option value="iniciante">Iniciante</option>
-                  <option value="intermediário">Intermediário</option>
-                  <option value="avançado">Avançado</option>
-                </select>
-              </div>
-
-              <div class="span2">
-                <label for="formato">Formato de saída</label>
-                <input id="formato" class="field" placeholder="Ex: tabela com Hook / Script / CTA / Duração (20–40s)" />
-              </div>
-
-              <div class="span2">
-                <label for="papelIA">Papel da IA (especialista)</label>
-                <input id="papelIA" class="field" placeholder="Ex: Estrategista de conteúdo TikTok focado em conversão para low ticket" />
-              </div>
-
-              <div class="span2">
-                <label for="restricoes">Restrições (obrigatórias)</label>
-                <textarea id="restricoes" class="field" placeholder="Ex: sem prometer dinheiro; linguagem simples; passo a passo; baixo orçamento; sem termos técnicos."></textarea>
-              </div>
-
-              <div class="span2">
-                <label for="tom">Tom (opcional)</label>
-                <input id="tom" class="field" placeholder="Ex: direto / amigável / técnico (se vazio: direto e prático)" />
-              </div>
+            <div class="chatRow">
+              <textarea id="chatInput" placeholder="Digite sua mensagem…"></textarea>
+              <button class="btn" id="btnChatSend">Enviar</button>
             </div>
 
-            <div class="rowActions">
-              <button class="btn btnPrimary" id="btnGerar">Gerar prompt</button>
-              <button class="btn btnSecondary" id="btnCopiar" disabled>Copiar</button>
-              <button class="btn btnGhost" id="btnLimpar">Limpar</button>
-            </div>
-
-            <div class="hint">
-              Para deixar o prompt mais forte: especifique melhor o <b>Formato</b> + aumente as <b>Restrições</b>.
-            </div>
+            <div class="miniHelp" id="chatStatusLine">Status: pronto.</div>
           </div>
         </section>
 
-        <!-- OUTPUT -->
-        <section class="card">
-          <div class="outputTop">
-            <div>
-              <h2 class="cardTitle" style="margin:0;">Prompt gerado</h2>
-              <div class="status" id="statusLine">Pronto para gerar.</div>
-            </div>
-            <span class="badge" id="badgeStatus">Aguardando</span>
-          </div>
-
-          <div class="outputBox">
-            <textarea id="saida" class="output" readonly>O prompt vai aparecer aqui…</textarea>
-          </div>
-
-          <div class="cardBody" style="padding-top:0;">
-            <div class="hint" style="margin-top:0;">
-              Copie e cole no ChatGPT. Se quiser iterar, altere apenas 1 pilar por vez.
-            </div>
-            <div class="footer">
-              Suporte: <a class="link" href="mailto:suporte@metodoia30d.com">suporte@metodoia30d.com</a>
-            </div>
-          </div>
-        </section>
-
-        <!-- HISTÓRICO -->
-        <section class="card">
+        <section class="card" style="margin-top:16px">
           <div class="cardHead">
             <div>
               <h2 class="cardTitle">Histórico</h2>
-              <p class="cardSub">Salvo na nuvem (Neon), sincroniza em qualquer dispositivo.</p>
+              <p class="cardSub">Prompts gerados e salvos no Neon. Você pode abrir, copiar ou excluir. O histórico é do seu dispositivo.</p>
             </div>
             <span class="badge" id="historyCount">0</span>
           </div>
 
-          <div class="historyTopActions">
+          <div class="historyTopActions" style="padding:16px 16px 0">
             <button class="btn miniBtn btnGhost" id="btnRefreshHistory">Atualizar</button>
             <button class="btn miniBtn btnDanger" id="btnClearHistory">Limpar histórico</button>
           </div>
 
-          <div class="historyList" id="historyList"></div>
+          <div class="historyList" id="historyList" style="padding:16px"></div>
         </section>
       </div>
     </div>
@@ -451,6 +414,7 @@
     const pillText = $("pillText");
     const btnLogout = $("btnLogout");
     const authBadge = $("authBadge");
+    const loginBadge = $("loginBadge");
 
     const btnLogin = $("btnLogin");
     const btnSignup = $("btnSignup");
@@ -482,6 +446,11 @@
     function setAuthBadge(type, text){
       authBadge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : type === "loading" ? " loading" : "");
       authBadge.textContent = text;
+    }
+
+    function setLoginBadge(type, text){
+      loginBadge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : type === "loading" ? " loading" : "");
+      loginBadge.textContent = text;
     }
 
     function escapeHtml(s){
@@ -551,6 +520,22 @@
       $("tom").value = payload.tom || "";
     }
 
+    function showLogged(email){
+      loginArea.style.display = "none";
+      appArea.style.display = "";
+      btnLogout.style.display = "";
+      pillText.innerHTML = `<strong>${escapeHtml(email)}</strong><span style="opacity:.7">•</span><span>logado</span>`;
+      setAuthBadge("ok", "Auth: OK");
+    }
+
+    function showLoggedOut(){
+      loginArea.style.display = "";
+      appArea.style.display = "none";
+      btnLogout.style.display = "none";
+      pillText.innerHTML = `<strong>Deslogado</strong><span style="opacity:.7">•</span><span>faça login</span>`;
+      setAuthBadge("err", "Auth: OFF");
+    }
+
     // ===== AUTH FLOW =====
     async function checkMe(){
       const t = getToken();
@@ -558,181 +543,170 @@
 
       const r = await fetch(API_BASE + "/auth/me", {
         method: "GET",
-        headers: { "Authorization": "Bearer " + t }
+        headers: authHeaders()
       });
 
+      const data = await r.json().catch(() => ({}));
       if (!r.ok) return null;
-      return r.json();
+      return data;
     }
 
-    function showLogged(email){
-      loginArea.classList.add("hidden");
-      appArea.classList.remove("hidden");
-      btnLogout.classList.remove("hidden");
-      pillText.textContent = "Logado: " + email;
-      setAuthBadge("ok", "Logado");
+    async function doLogin(email, password){
+      const r = await fetch(API_BASE + "/auth/login", {
+        method: "POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
+      return data;
     }
 
-    function showLoggedOut(){
-      loginArea.classList.remove("hidden");
-      appArea.classList.add("hidden");
-      btnLogout.classList.add("hidden");
-      pillText.textContent = "Deslogado";
-      setAuthBadge("idle", "Aguardando");
+    async function doSignup(email, password, code){
+      const r = await fetch(API_BASE + "/auth/signup", {
+        method: "POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({ email, password, code })
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
+      return data;
     }
+
+    btnLogin.onclick = async () => {
+      const email = loginEmail.value.trim().toLowerCase();
+      const password = loginPass.value;
+      if (!email || !password) return alert("Preencha e-mail e senha.");
+
+      setLoginBadge("loading", "Entrando…");
+      btnLogin.disabled = true; btnSignup.disabled = true;
+      try{
+        const data = await doLogin(email, password);
+        setToken(data.token);
+        showLogged(data.email);
+        setLoginBadge("ok", "Logado ✓");
+        await renderHistory();
+        await refreshChatUsage();
+      }catch(e){
+        setLoginBadge("err", "Erro");
+        alert("Login falhou: " + (e?.message || "unknown"));
+      }finally{
+        btnLogin.disabled = false; btnSignup.disabled = false;
+      }
+    };
+
+    btnSignup.onclick = async () => {
+      const email = loginEmail.value.trim().toLowerCase();
+      const password = loginPass.value;
+      const code = signupCode.value.trim();
+      if (!email || !password || !code) return alert("Preencha e-mail, senha e código.");
+
+      setLoginBadge("loading", "Criando…");
+      btnLogin.disabled = true; btnSignup.disabled = true;
+      try{
+        const data = await doSignup(email, password, code);
+        setToken(data.token);
+        showLogged(data.email);
+        setLoginBadge("ok", "Conta criada ✓");
+        await renderHistory();
+        await refreshChatUsage();
+      }catch(e){
+        setLoginBadge("err", "Erro");
+        alert("Signup falhou: " + (e?.message || "unknown"));
+      }finally{
+        btnLogin.disabled = false; btnSignup.disabled = false;
+      }
+    };
 
     btnLogout.onclick = () => {
       clearToken();
       showLoggedOut();
     };
 
-    btnLogin.onclick = async () => {
-      setAuthBadge("loading", "Entrando…");
-      btnLogin.disabled = true;
-
-      try{
-        const r = await fetch(API_BASE + "/auth/login", {
-          method:"POST",
-          headers:{ "Content-Type":"application/json" },
-          body: JSON.stringify({
-            email: loginEmail.value.trim(),
-            password: loginPass.value
-          })
-        });
-        const data = await r.json().catch(()=> ({}));
-        if (!r.ok) {
-          setAuthBadge("err", data?.error || ("HTTP " + r.status));
-          return;
-        }
-
-        setToken(data.token);
-
-        const me = await checkMe();
-        if (!me?.email) {
-          setAuthBadge("err", "Falha ao validar token");
-          clearToken();
-          return;
-        }
-
-        showLogged(me.email);
-        await renderHistory();
-      } finally {
-        btnLogin.disabled = false;
-      }
-    };
-
-    btnSignup.onclick = async () => {
-      setAuthBadge("loading", "Criando…");
-      btnSignup.disabled = true;
-
-      try{
-        const r = await fetch(API_BASE + "/auth/signup", {
-          method:"POST",
-          headers:{ "Content-Type":"application/json" },
-          body: JSON.stringify({
-            email: loginEmail.value.trim(),
-            password: loginPass.value,
-            signup_code: signupCode.value.trim()
-          })
-        });
-        const data = await r.json().catch(()=> ({}));
-        if (!r.ok) {
-          setAuthBadge("err", data?.error || ("HTTP " + r.status));
-          return;
-        }
-
-        setToken(data.token);
-
-        const me = await checkMe();
-        if (!me?.email) {
-          setAuthBadge("err", "Falha ao validar token");
-          clearToken();
-          return;
-        }
-
-        showLogged(me.email);
-        await renderHistory();
-      } finally {
-        btnSignup.disabled = false;
-      }
-    };
-
     // ===== HISTORY (JWT) =====
-    async function fetchHistory(limit = 30){
+    async function fetchHistory(limit=50){
       const r = await fetch(API_BASE + "/api/history?limit=" + encodeURIComponent(String(limit)), {
         method: "GET",
-        headers: { "Authorization":"Bearer " + getToken() }
+        headers: authHeaders()
       });
-      const data = await r.json().catch(()=> ({}));
-      if (!r.ok) throw new Error(data?.error || data?.detail || ("HTTP " + r.status));
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
       return data.items || [];
     }
 
     async function deleteHistoryItem(id){
       const r = await fetch(API_BASE + "/api/history/" + encodeURIComponent(id), {
         method: "DELETE",
-        headers: { "Authorization":"Bearer " + getToken() }
+        headers: authHeaders()
       });
-      const data = await r.json().catch(()=> ({}));
-      if (!r.ok) throw new Error(data?.error || data?.detail || ("HTTP " + r.status));
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
       return data;
     }
 
     async function clearHistoryAll(){
-      const items = await fetchHistory(100);
-      if (!items.length) return;
+      const r = await fetch(API_BASE + "/api/history", {
+        method: "DELETE",
+        headers: authHeaders()
+      });
+      const data = await r.json().catch(() => ({}));
+      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
+      return data;
+    }
 
-      const ids = items.map(x => x.id);
-      const BATCH = 5;
+    function renderHistoryList(items){
+      historyList.innerHTML = "";
+      historyCount.textContent = String(items.length || 0);
 
-      for (let i = 0; i < ids.length; i += BATCH){
-        const slice = ids.slice(i, i + BATCH);
-        await Promise.allSettled(slice.map(id => deleteHistoryItem(id)));
+      if (!items.length){
+        historyList.innerHTML = `<div class="miniHelp">Nenhum histórico ainda. Gere um prompt para aparecer aqui.</div>`;
+        return;
+      }
+
+      for (const item of items){
+        const id = item.id;
+        const created = nowLabelISO(item.created_at);
+        const payload = item.payload || {};
+        const title =
+          (payload.nicho ? String(payload.nicho).slice(0, 42) : "Prompt") +
+          (payload.objetivo ? " • " + String(payload.objetivo).slice(0, 42) : "");
+
+        const el = document.createElement("div");
+        el.className = "histItem";
+
+        el.innerHTML = `
+          <div class="histMeta">
+            <b>${escapeHtml(title)}</b>
+            <span>${escapeHtml(created)}</span>
+          </div>
+          <div class="histBtns">
+            <button class="btn miniBtn btnGhost" data-act="open" data-id="${escapeHtml(id)}">Abrir</button>
+            <button class="btn miniBtn" data-act="copy" data-id="${escapeHtml(id)}">Copiar</button>
+            <button class="btn miniBtn btnDanger" data-act="del" data-id="${escapeHtml(id)}">Excluir</button>
+          </div>
+        `;
+        historyList.appendChild(el);
+        el._data = item;
       }
     }
 
     async function renderHistory(){
-      historyList.innerHTML = `
-        <div style="padding:10px 2px; color: var(--muted); font-size:12px; line-height:1.4;">
-          Carregando histórico…
-        </div>
-      `;
-
-      const items = await fetchHistory(30);
-      historyCount.textContent = String(items.length);
-
-      if (!items.length){
-        historyList.innerHTML = `
-          <div style="padding:10px 2px; color: var(--muted); font-size:12px; line-height:1.4;">
-            Nenhum prompt salvo ainda.
-          </div>
-        `;
-        return;
+      try{
+        const items = await fetchHistory(80);
+        renderHistoryList(items);
+      }catch(e){
+        historyList.innerHTML = `<div class="miniHelp">Erro ao carregar histórico.</div>`;
       }
-
-      historyList.innerHTML = items.map(item => `
-        <div class="item">
-          <div class="itemTitle">${escapeHtml(item.title || "Prompt")}</div>
-          <div class="itemMeta">${escapeHtml(nowLabelISO(item.created_at))}</div>
-          <div class="itemBtns">
-            <button class="btn miniBtn btnGhost" data-act="open" data-id="${escapeHtml(item.id)}">Abrir</button>
-            <button class="btn miniBtn btnSecondary" data-act="copy" data-id="${escapeHtml(item.id)}">Copiar</button>
-            <button class="btn miniBtn btnDanger" data-act="del" data-id="${escapeHtml(item.id)}">Excluir</button>
-          </div>
-        </div>
-      `).join("");
     }
 
-    historyList.addEventListener("click", async (e) => {
-      const btn = e.target.closest("button[data-act]");
+    historyList.addEventListener("click", async (ev) => {
+      const btn = ev.target.closest("button");
       if (!btn) return;
+      const act = btn.dataset.act;
+      const id = btn.dataset.id;
 
-      const act = btn.getAttribute("data-act");
-      const id = btn.getAttribute("data-id");
-
-      const items = await fetchHistory(30);
-      const item = items.find(x => x.id === id);
-      if (!item) return;
+      const card = btn.closest(".histItem");
+      const item = card?._data;
 
       if (act === "open"){
         fillForm(item.payload || {});
@@ -790,8 +764,7 @@
       }
 
       btnGerar.disabled = true;
-      setStatus("loading", "Gerando prompt…");
-      saida.value = "Gerando…";
+      setStatus("loading", "Gerando…");
 
       try{
         const r = await fetch(API_BASE + "/api/prompt", {
@@ -840,6 +813,166 @@
       setStatus("idle", "Pronto para gerar.");
     };
 
+    // ===== CHAT (JWT) =====
+    const chatBox = $("chatBox");
+    const chatInput = $("chatInput");
+    const btnChatSend = $("btnChatSend");
+    const btnChatLoad = $("btnChatLoad");
+    const btnChatClear = $("btnChatClear");
+    const chatStatusLine = $("chatStatusLine");
+    const chatUsageChip = $("chatUsageChip");
+
+    function chatStatus(text){
+      chatStatusLine.textContent = "Status: " + text;
+    }
+
+    function chatScrollBottom(){
+      chatBox.scrollTop = chatBox.scrollHeight + 9999;
+    }
+
+    function chatAdd(role, content){
+      const wrap = document.createElement("div");
+      wrap.className = "msg " + (role === "user" ? "user" : "ai");
+      const b = document.createElement("div");
+      b.className = "bubble";
+      b.textContent = content || "";
+      wrap.appendChild(b);
+      chatBox.appendChild(wrap);
+      chatScrollBottom();
+    }
+
+    function chatClearUI(){
+      chatBox.innerHTML = "";
+    }
+
+    async function fetchChatUsage(){
+      const r = await fetch(API_BASE + "/api/chat/usage", { method:"GET", headers: authHeaders() });
+      const data = await r.json().catch(()=> ({}));
+      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
+      return data;
+    }
+
+    async function refreshChatUsage(){
+      try{
+        const u = await fetchChatUsage();
+        chatUsageChip.textContent = `Limite diário: ${u.count}/${u.limit} • Restante: ${u.remaining}`;
+      }catch{
+        chatUsageChip.textContent = "Limite diário: indisponível";
+      }
+    }
+
+    async function loadChatHistory(limit=50){
+      const r = await fetch(API_BASE + "/api/chat/history?limit=" + encodeURIComponent(String(limit)), {
+        method: "GET",
+        headers: authHeaders()
+      });
+      const data = await r.json().catch(()=> ({}));
+      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
+
+      const items = Array.isArray(data.items) ? data.items : [];
+      items.sort((a,b)=> new Date(a.created_at) - new Date(b.created_at));
+
+      chatClearUI();
+      for (const it of items){
+        if (it.role === "user") chatAdd("user", it.content);
+        else if (it.role === "assistant") chatAdd("assistant", it.content);
+      }
+      chatStatus(items.length ? "histórico carregado." : "sem histórico.");
+      chatScrollBottom();
+    }
+
+    async function clearChatHistory(){
+      const r = await fetch(API_BASE + "/api/chat/history", {
+        method: "DELETE",
+        headers: authHeaders()
+      });
+      const data = await r.json().catch(()=> ({}));
+      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
+      return data;
+    }
+
+    async function sendChat(){
+      const text = (chatInput.value || "").trim();
+      if (!text) return;
+
+      btnChatSend.disabled = true;
+      chatInput.disabled = true;
+
+      chatAdd("user", text);
+      chatInput.value = "";
+      chatStatus("enviando…");
+
+      try{
+        const r = await fetch(API_BASE + "/api/chat", {
+          method: "POST",
+          headers: authHeaders(),
+          body: JSON.stringify({ message: text })
+        });
+
+        const data = await r.json().catch(()=> ({}));
+        if (!r.ok){
+          const err = data?.error || ("HTTP " + r.status);
+          if (err === "chat_limit_reached") {
+            chatAdd("assistant", "Você atingiu o limite diário de mensagens. Volte amanhã.");
+          } else {
+            chatAdd("assistant", "Erro: " + err);
+          }
+          chatStatus("erro.");
+          await refreshChatUsage();
+          return;
+        }
+
+        const reply = data.reply || "";
+        chatAdd("assistant", reply || "(sem resposta)");
+        chatStatus("respondido.");
+        await refreshChatUsage();
+      } catch(e){
+        chatAdd("assistant", "Erro de conexão com o servidor.");
+        chatStatus("erro de conexão.");
+      } finally{
+        btnChatSend.disabled = false;
+        chatInput.disabled = false;
+        chatInput.focus();
+      }
+    }
+
+    btnChatSend.onclick = () => sendChat();
+    chatInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" && !e.shiftKey){
+        e.preventDefault();
+        sendChat();
+      }
+    });
+
+    btnChatLoad.onclick = async () => {
+      btnChatLoad.disabled = true;
+      try{
+        chatStatus("carregando histórico…");
+        await loadChatHistory(80);
+        await refreshChatUsage();
+      }catch(err){
+        chatStatus("erro ao carregar.");
+        alert("Erro ao carregar chat: " + (err?.message || "unknown"));
+      }finally{
+        btnChatLoad.disabled = false;
+      }
+    };
+
+    btnChatClear.onclick = async () => {
+      if (!confirm("Apagar TODO o histórico do chat da sua conta?")) return;
+      btnChatClear.disabled = true;
+      try{
+        await clearChatHistory();
+        chatClearUI();
+        chatStatus("apagado.");
+        await refreshChatUsage();
+      }catch(err){
+        alert("Erro ao apagar chat: " + (err?.message || "unknown"));
+      }finally{
+        btnChatClear.disabled = false;
+      }
+    };
+
     // init
     (async function init(){
       setStatus("idle", "Pronto para gerar.");
@@ -847,6 +980,7 @@
       if (me?.email){
         showLogged(me.email);
         await renderHistory();
+        await refreshChatUsage();
       } else {
         showLoggedOut();
       }
