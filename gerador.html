@@ -35,7 +35,12 @@
       min-height:100vh;
     }
     a{ color:inherit; text-decoration:none; }
-    .wrap{ max-width:1140px; margin:0 auto; padding:26px 16px 54px; }
+    .wrap{
+  width: 100%;
+  max-width: 1140px;
+  margin: 0 auto;
+  padding: 26px 16px 54px;
+}
     .topbar{
       display:flex; align-items:center; justify-content:space-between; gap:14px;
       padding:14px 16px; border:1px solid var(--line); border-radius:18px;
@@ -231,6 +236,56 @@
       color:var(--muted);
       font-size:12px;
     }
+
+    /* ===== Fix inputs (Chrome / mobile) ===== */
+.field{
+  color: var(--text) !important;
+  background: rgba(255,255,255,.03) !important;
+  -webkit-text-fill-color: var(--text) !important;
+}
+
+/* placeholder visível */
+.field::placeholder{
+  color: rgba(154,164,178,.75) !important; /* --muted com mais contraste */
+}
+
+/* autofill do Chrome (fica branco/amarelo se não tratar) */
+input.field:-webkit-autofill,
+input.field:-webkit-autofill:hover,
+input.field:-webkit-autofill:focus,
+textarea.field:-webkit-autofill,
+textarea.field:-webkit-autofill:hover,
+textarea.field:-webkit-autofill:focus{
+  -webkit-text-fill-color: var(--text) !important;
+  caret-color: var(--text) !important;
+  transition: background-color 999999s ease-in-out 0s;
+  box-shadow: 0 0 0px 1000px rgba(255,255,255,.03) inset !important;
+  border: 1px solid var(--line) !important;
+}
+
+/* foco: não deixa o browser "clarear" o campo */
+.field:focus{
+  outline: none;
+  border-color: rgba(124,58,237,.55) !important;
+  box-shadow: 0 0 0 3px rgba(124,58,237,.18);
+}
+/* ===== Mobile layout fix ===== */
+@media (max-width: 980px){
+  .topbar{
+    position: static !important;   /* sticky no mobile quebra fácil */
+    backdrop-filter: none !important;
+  }
+  .wrap{
+    padding-top: 16px;
+  }
+}
+/* Evita espaço vazio e garante cards 100% */
+.grid.oneCol{
+  grid-template-columns: 1fr !important;
+}
+.card{
+  width: 100%;
+}
   </style>
 </head>
 <body>
