@@ -396,7 +396,7 @@
               </div>
               <div>
                 <label>Meta</label>
-                <input class="field" id="meta" placeholder="Ex: Estrutura planner + bônus checklist"/>
+                <input class="field" id="meta" placeholder=" Meta especifica de seus objetivos"/>
               </div>
               
             
@@ -578,15 +578,12 @@
         objetivo: $("objetivo").value.trim(),
         publico: $("publico").value.trim(),
         formato: $("meta").value.trim(),
-        nivel: $("nivel").value.trim(),
-        restricoes: $("restricoes").value.trim(),
-        papelIA: $("papelIA").value.trim(),
-        tom: $("tom").value.trim(),
+        
       };
     }
 
     function validate(p){
-      if (!p.nicho || !p.objetivo || !p.publico || !p.meta || !p.nivel || !p.restricoes || !p.papelIA) {
+      if (!p.nicho || !p.objetivo || !p.publico || !p.meta ) {
         return "Preencha: Nicho, Objetivo, Público, Formato, Nível, Restrições e Papel da IA.";
       }
       return null;
@@ -597,10 +594,7 @@
       $("objetivo").value = payload.objetivo || "";
       $("publico").value = payload.publico || "";
       $("meta").value = payload.formato || "";
-      $("nivel").value = payload.nivel || "";
-      $("restricoes").value = payload.restricoes || "";
-      $("papelIA").value = payload.papelIA || "";
-      $("tom").value = payload.tom || "";
+      
     }
 
     function showLogged(email){
