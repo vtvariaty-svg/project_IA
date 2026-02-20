@@ -195,6 +195,11 @@ h1{
   grid-template-columns: repeat(4, 1fr);
   gap:12px;
 }
+
+/* Quando deslogado, vira 1 coluna para não sobrar espaço vazio */
+.grid.oneCol{
+  grid-template-columns: 1fr !important;
+}
 @media (max-width: 900px){
   .grid{ grid-template-columns:1fr; }
 }

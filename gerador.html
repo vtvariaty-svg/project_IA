@@ -248,7 +248,7 @@
       </div>
     </div>
 
-    <div class="grid">
+    <div class="grid" id="mainGrid">
       <!-- LOGIN -->
       <section class="card" id="loginArea">
         <div class="cardHead">
@@ -410,6 +410,7 @@
     const $ = (id) => document.getElementById(id);
 
     const loginArea = $("loginArea");
+    const mainGrid = $("mainGrid");
     const appArea = $("appArea");
     const pillText = $("pillText");
     const btnLogout = $("btnLogout");
@@ -530,6 +531,7 @@
       btnLogout.style.display = "";
       pillText.innerHTML = `<strong>${escapeHtml(email)}</strong><span style="opacity:.7">•</span><span>logado</span>`;
       setAuthBadge("ok", "Auth: OK");
+      mainGrid.classList.remove("oneCol");
     }
 
     function showLoggedOut(){
@@ -538,6 +540,7 @@
       btnLogout.style.display = "none";
       pillText.innerHTML = `<strong>Deslogado</strong><span style="opacity:.7">•</span><span>faça login</span>`;
       setAuthBadge("err", "Auth: OFF");
+      mainGrid.classList.add("oneCol");
     }
 
     // ===== AUTH FLOW =====
