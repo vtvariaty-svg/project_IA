@@ -1,8 +1,9 @@
 <!doctype html>
 <html lang="pt-br">
+
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Gerador — IA Operacional 30D</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -10,304 +11,558 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root{
-      --bg0:#050816;
-      --bg1:#0b1220;
-      --muted:#9aa4b2;
-      --text:#eef2ff;
-      --line:rgba(255,255,255,.10);
-      --shadow: 0 18px 55px rgba(0,0,0,.40);
+    :root {
+      --bg0: #050816;
+      --bg1: #0b1220;
+      --muted: #9aa4b2;
+      --text: #eef2ff;
+      --line: rgba(255, 255, 255, .10);
+      --shadow: 0 18px 55px rgba(0, 0, 0, .40);
       --radius: 18px;
       --accent: #7c3aed;
-      --accent2:#22c55e;
-      --danger:#ef4444;
-      --warn:#f59e0b;
+      --accent2: #22c55e;
+      --danger: #ef4444;
+      --warn: #f59e0b;
     }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 700px at 10% -10%, rgba(124,58,237,.35), transparent 60%),
-        radial-gradient(900px 600px at 95% 10%, rgba(34,197,94,.18), transparent 55%),
-        linear-gradient(180deg, var(--bg0), var(--bg1));
-      min-height:100vh;
-    }
-    a{ color:inherit; text-decoration:none; }
 
-    .wrap{
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% -10%, rgba(124, 58, 237, .35), transparent 60%),
+        radial-gradient(900px 600px at 95% 10%, rgba(34, 197, 94, .18), transparent 55%),
+        linear-gradient(180deg, var(--bg0), var(--bg1));
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .wrap {
       width: 100%;
       max-width: 1140px;
       margin: 0 auto;
       padding: 26px 16px 54px;
     }
 
-    .topbar{
-      display:flex; align-items:center; justify-content:space-between; gap:14px;
-      padding:14px 16px; border:1px solid var(--line); border-radius:18px;
-      background:rgba(255,255,255,.03); box-shadow:var(--shadow);
-      position:sticky; top:14px; backdrop-filter: blur(10px);
-      z-index:5;
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, .03);
+      box-shadow: var(--shadow);
+      position: sticky;
+      top: 14px;
+      backdrop-filter: blur(10px);
+      z-index: 5;
     }
-    .brand{ display:flex; gap:12px; align-items:center; }
-    .logo{
-      width:42px; height:42px; border-radius:14px;
-      background: radial-gradient(circle at 25% 25%, rgba(124,58,237,.9), rgba(34,197,94,.25) 55%, rgba(255,255,255,.05) 75%);
-      border:1px solid var(--line);
-      box-shadow: 0 14px 40px rgba(0,0,0,.35);
-    }
-    .btxt b{ display:block; font-size:14px; letter-spacing:.2px; }
-    .btxt span{ display:block; color:var(--muted); font-size:12px; margin-top:2px; }
 
-    .row{ display:flex; gap:10px; align-items:center; }
-    .pill{
-      padding:8px 10px;
-      border:1px solid var(--line);
-      border-radius:999px;
-      background:rgba(255,255,255,.03);
-      color:var(--muted);
-      font-size:12px;
-      display:inline-flex; gap:8px; align-items:center;
-      white-space:nowrap;
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
     }
-    .pill strong{ color:var(--text); font-weight:600; }
-    .btn{
-      appearance:none; border:1px solid var(--line);
-      background:rgba(255,255,255,.04);
-      color:var(--text);
-      padding:10px 12px; border-radius:12px;
-      cursor:pointer; font-weight:600;
-      transition:.15s transform, .15s background;
-      box-shadow: 0 12px 35px rgba(0,0,0,.28);
-    }
-    .btn:hover{ transform: translateY(-1px); background:rgba(255,255,255,.06); }
-    .btn:disabled{ opacity:.55; cursor:not-allowed; transform:none; }
-    .btnPrimary{ border-color: rgba(124,58,237,.55); background: rgba(124,58,237,.18); }
-    .btnDanger{ border-color: rgba(239,68,68,.55); background: rgba(239,68,68,.14); }
-    .btnGhost{ background:transparent; box-shadow:none; }
 
-    .grid{
-      display:grid; grid-template-columns: 1.12fr .88fr;
-      gap:16px; margin-top:16px;
+    .logo {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      background: radial-gradient(circle at 25% 25%, rgba(124, 58, 237, .9), rgba(34, 197, 94, .25) 55%, rgba(255, 255, 255, .05) 75%);
+      border: 1px solid var(--line);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, .35);
     }
-    .grid.oneCol{
+
+    .btxt b {
+      display: block;
+      font-size: 14px;
+      letter-spacing: .2px;
+    }
+
+    .btxt span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+      margin-top: 2px;
+    }
+
+    .row {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .pill {
+      padding: 8px 10px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, .03);
+      color: var(--muted);
+      font-size: 12px;
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .pill strong {
+      color: var(--text);
+      font-weight: 600;
+    }
+
+    .btn {
+      appearance: none;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .04);
+      color: var(--text);
+      padding: 10px 12px;
+      border-radius: 12px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: .15s transform, .15s background;
+      box-shadow: 0 12px 35px rgba(0, 0, 0, .28);
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: rgba(255, 255, 255, .06);
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btnPrimary {
+      border-color: rgba(124, 58, 237, .55);
+      background: rgba(124, 58, 237, .18);
+    }
+
+    .btnDanger {
+      border-color: rgba(239, 68, 68, .55);
+      background: rgba(239, 68, 68, .14);
+    }
+
+    .btnGhost {
+      background: transparent;
+      box-shadow: none;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.12fr .88fr;
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .grid.oneCol {
       grid-template-columns: 1fr !important;
     }
 
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      .topbar{ position:static; }
+    @media (max-width: 980px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .topbar {
+        position: static;
+      }
     }
 
-    .card{
-      width:100%;
-      border:1px solid var(--line);
+    .card {
+      width: 100%;
+      border: 1px solid var(--line);
       border-radius: var(--radius);
-      background: rgba(255,255,255,.03);
+      background: rgba(255, 255, 255, .03);
       box-shadow: var(--shadow);
-      overflow:hidden;
+      overflow: hidden;
     }
-    .cardHead{
-      padding:16px 16px 14px;
-      display:flex; align-items:flex-start; justify-content:space-between; gap:12px;
-      border-bottom:1px solid var(--line);
-    }
-    .cardTitle{ margin:0; font-size:15px; }
-    .cardSub{ margin:6px 0 0; color:var(--muted); font-size:12px; line-height:1.35; }
-    .cardBody{ padding:16px; }
 
-    label{ display:block; font-size:12px; color:var(--muted); margin:0 0 6px; }
-    .field{
-      width:100%; padding:12px 12px;
-      border-radius:14px; border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-      outline:none;
+    .cardHead {
+      padding: 16px 16px 14px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      border-bottom: 1px solid var(--line);
     }
-    textarea.field{ min-height:92px; resize:vertical; }
-    .formGrid{ display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    @media (max-width: 680px){ .formGrid{ grid-template-columns:1fr; } }
-    .actions{ display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
 
-    .badge{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      color:var(--muted);
-      padding:8px 10px;
-      font-size:12px;
-      border-radius:999px;
-      white-space:nowrap;
-      align-self:flex-start;
+    .cardTitle {
+      margin: 0;
+      font-size: 15px;
     }
-    .badge.ok{ border-color: rgba(34,197,94,.55); color:#bff7d6; background:rgba(34,197,94,.10); }
-    .badge.err{ border-color: rgba(239,68,68,.55); color:#ffd1d1; background:rgba(239,68,68,.10); }
-    .badge.loading{ border-color: rgba(245,158,11,.55); color:#ffe7bf; background:rgba(245,158,11,.08); }
 
-    .output{
-      width:100%;
+    .cardSub {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.35;
+    }
+
+    .cardBody {
+      padding: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin: 0 0 6px;
+    }
+
+    .field {
+      width: 100%;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .03);
+      color: var(--text);
+      outline: none;
+    }
+
+    textarea.field {
+      min-height: 92px;
+      resize: vertical;
+    }
+
+    .formGrid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    @media (max-width: 680px) {
+      .formGrid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 12px;
+    }
+
+    .badge {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .03);
+      color: var(--muted);
+      padding: 8px 10px;
+      font-size: 12px;
+      border-radius: 999px;
+      white-space: nowrap;
+      align-self: flex-start;
+    }
+
+    .badge.ok {
+      border-color: rgba(34, 197, 94, .55);
+      color: #bff7d6;
+      background: rgba(34, 197, 94, .10);
+    }
+
+    .badge.err {
+      border-color: rgba(239, 68, 68, .55);
+      color: #ffd1d1;
+      background: rgba(239, 68, 68, .10);
+    }
+
+    .badge.loading {
+      border-color: rgba(245, 158, 11, .55);
+      color: #ffe7bf;
+      background: rgba(245, 158, 11, .08);
+    }
+
+    .output {
+      width: 100%;
       min-height: 290px;
       border-radius: 14px;
-      border:1px solid var(--line);
-      background: rgba(255,255,255,.03);
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .03);
       color: var(--text);
       padding: 12px 12px;
       line-height: 1.35;
       white-space: pre-wrap;
       resize: vertical;
-      outline:none;
+      outline: none;
     }
-    .miniHelp{ font-size:12px; color:var(--muted); margin-top:10px; line-height:1.35; }
 
-    .loginBox{
-      display:flex; flex-direction:column; gap:12px;
+    .miniHelp {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 10px;
+      line-height: 1.35;
     }
-    .loginRow{ display:flex; gap:10px; flex-wrap:wrap; }
-    .loginRow > *{ flex:1; min-width: 220px; }
-    .splitLine{ height:1px; background: var(--line); margin:6px 0; }
 
-    .historyList{ display:flex; flex-direction:column; gap:10px; padding-top:10px; }
-    .histItem{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.02);
-      border-radius:14px;
-      padding:12px;
-      display:flex;
-      justify-content:space-between;
-      gap:12px;
+    .loginBox {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
-    .histMeta{ display:flex; flex-direction:column; gap:4px; }
-    .histMeta b{ font-size:13px; }
-    .histMeta span{ font-size:12px; color:var(--muted); }
-    .histBtns{ display:flex; gap:8px; align-items:flex-start; }
-    .miniBtn{ padding:8px 10px; border-radius:10px; font-size:12px; box-shadow:none; }
-    .historyTopActions{ display:flex; gap:10px; flex-wrap:wrap; padding-top:10px; }
+
+    .loginRow {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .loginRow>* {
+      flex: 1;
+      min-width: 220px;
+    }
+
+    .splitLine {
+      height: 1px;
+      background: var(--line);
+      margin: 6px 0;
+    }
+
+    .historyList {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 10px;
+    }
+
+    .histItem {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .02);
+      border-radius: 14px;
+      padding: 12px;
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .histMeta {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .histMeta b {
+      font-size: 13px;
+    }
+
+    .histMeta span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .histBtns {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+    }
+
+    .miniBtn {
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 12px;
+      box-shadow: none;
+    }
+
+    .historyTopActions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding-top: 10px;
+    }
 
     /* ===== Chat ===== */
-    .chatWrap{ display:flex; flex-direction:column; gap:10px; }
-    .chatBox{
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      border-radius:14px;
-      padding:12px;
-      height:360px;
-      overflow:auto;
+    .chatWrap {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
-    .msg{ display:flex; margin:10px 0; }
-    .msg .bubble{
-      max-width:85%;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      box-shadow: 0 10px 30px rgba(0,0,0,.18);
-      white-space:pre-wrap;
-      word-wrap:break-word;
-      line-height:1.35;
-      font-size:14px;
+
+    .chatBox {
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .03);
+      border-radius: 14px;
+      padding: 12px;
+      height: 360px;
+      overflow: auto;
     }
-    .msg.user{ justify-content:flex-end; }
-    .msg.user .bubble{ background:rgba(124,58,237,.18); }
-    .msg.ai{ justify-content:flex-start; }
-    .msg.ai .bubble{ background:rgba(34,197,94,.10); }
-    .chatRow{ display:flex; gap:10px; }
-    .chatRow textarea{
-      flex:1;
-      min-height:46px;
-      max-height:140px;
-      resize:vertical;
-      padding:12px 12px;
-      border-radius:14px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      color:var(--text);
-      outline:none;
+
+    .msg {
+      display: flex;
+      margin: 10px 0;
     }
-    .chatMeta{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
+
+    .msg .bubble {
+      max-width: 85%;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, .18);
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      line-height: 1.35;
+      font-size: 14px;
     }
-    .chip{
-      display:inline-flex;
-      align-items:center;
-      gap:8px;
-      padding:8px 10px;
-      border-radius:999px;
-      border:1px solid var(--line);
-      background:rgba(255,255,255,.03);
-      color:var(--muted);
-      font-size:12px;
+
+    .msg.user {
+      justify-content: flex-end;
+    }
+
+    .msg.user .bubble {
+      background: rgba(124, 58, 237, .18);
+    }
+
+    .msg.ai {
+      justify-content: flex-start;
+    }
+
+    .msg.ai .bubble {
+      background: rgba(34, 197, 94, .10);
+    }
+
+    .chatRow {
+      display: flex;
+      gap: 10px;
+    }
+
+    .chatRow textarea {
+      flex: 1;
+      min-height: 46px;
+      max-height: 140px;
+      resize: vertical;
+      padding: 12px 12px;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .03);
+      color: var(--text);
+      outline: none;
+    }
+
+    .chatMeta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: rgba(255, 255, 255, .03);
+      color: var(--muted);
+      font-size: 12px;
     }
 
     /* ===== Fix inputs (Chrome / mobile) ===== */
-    .field{
+    .field {
       color: var(--text) !important;
-      background: rgba(255,255,255,.03) !important;
+      background: rgba(255, 255, 255, .03) !important;
       -webkit-text-fill-color: var(--text) !important;
     }
-    .field::placeholder{
-      color: rgba(154,164,178,.75) !important;
+
+    .field::placeholder {
+      color: rgba(154, 164, 178, .75) !important;
     }
+
     input.field:-webkit-autofill,
     input.field:-webkit-autofill:hover,
     input.field:-webkit-autofill:focus,
     textarea.field:-webkit-autofill,
     textarea.field:-webkit-autofill:hover,
-    textarea.field:-webkit-autofill:focus{
+    textarea.field:-webkit-autofill:focus {
       -webkit-text-fill-color: var(--text) !important;
       caret-color: var(--text) !important;
       transition: background-color 999999s ease-in-out 0s;
-      box-shadow: 0 0 0px 1000px rgba(255,255,255,.03) inset !important;
+      box-shadow: 0 0 0px 1000px rgba(255, 255, 255, .03) inset !important;
       border: 1px solid var(--line) !important;
     }
-    .field:focus{
+
+    .field:focus {
       outline: none;
-      border-color: rgba(124,58,237,.55) !important;
-      box-shadow: 0 0 0 3px rgba(124,58,237,.18);
+      border-color: rgba(124, 58, 237, .55) !important;
+      box-shadow: 0 0 0 3px rgba(124, 58, 237, .18);
     }
 
     /* ===== Mobile layout fix ===== */
-    @media (max-width: 980px){
-      .topbar{
+    @media (max-width: 980px) {
+      .topbar {
         position: static !important;
         backdrop-filter: none !important;
       }
-      .wrap{ padding-top: 16px; }
+
+      .wrap {
+        padding-top: 16px;
+      }
     }
 
     /* ===== iPhone / mobile polish ===== */
-    @media (max-width: 520px){
-      .topbar{
+    @media (max-width: 520px) {
+      .topbar {
         flex-direction: column;
         align-items: flex-start;
         gap: 10px;
         padding: 12px 12px;
       }
-      .brand{ width: 100%; }
-      .btxt b{ font-size: 14px; }
-      .btxt span{
+
+      .brand {
+        width: 100%;
+      }
+
+      .btxt b {
+        font-size: 14px;
+      }
+
+      .btxt span {
         font-size: 11px;
         line-height: 1.25;
         max-width: 100%;
       }
-      .topbar .row{
+
+      .topbar .row {
         width: 100%;
         justify-content: space-between;
       }
-      .pill{
+
+      .pill {
         max-width: 100%;
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      .cardHead{ padding: 14px 14px 12px; }
-      .cardBody{ padding: 14px; }
-      .btn{ width: auto; padding: 12px 14px; }
-      .loginRow > *{ min-width: 100%; }
+
+      .cardHead {
+        padding: 14px 14px 12px;
+      }
+
+      .cardBody {
+        padding: 14px;
+      }
+
+      .btn {
+        width: auto;
+        padding: 12px 14px;
+      }
+
+      .loginRow>* {
+        min-width: 100%;
+      }
     }
   </style>
 </head>
+
 <body>
   <div class="wrap">
     <div class="topbar">
@@ -320,7 +575,8 @@
       </div>
 
       <div class="row">
-        <span class="pill" id="pillText"><strong>Deslogado</strong><span style="opacity:.7">•</span><span>faça login</span></span>
+        <span class="pill" id="pillText"><strong>Deslogado</strong><span style="opacity:.7">•</span><span>faça
+            login</span></span>
         <button class="btn btnGhost" id="btnLogout" style="display:none">Sair</button>
         <span class="badge" id="authBadge" style="display:none">Auth: —</span>
       </div>
@@ -342,17 +598,18 @@
             <div class="loginRow">
               <div>
                 <label>E-mail</label>
-                <input class="field" id="loginEmail" placeholder="seu@email.com" autocomplete="email"/>
+                <input class="field" id="loginEmail" placeholder="seu@email.com" autocomplete="email" />
               </div>
               <div>
                 <label>Senha</label>
-                <input class="field" id="loginPass" placeholder="••••••••" type="password" autocomplete="current-password"/>
+                <input class="field" id="loginPass" placeholder="••••••••" type="password"
+                  autocomplete="current-password" />
               </div>
             </div>
 
             <div>
               <label>Código de cadastro (signup code)</label>
-              <input class="field" id="signupCode" placeholder="código que você definiu no backend"/>
+              <input class="field" id="signupCode" placeholder="código que você definiu no backend" />
             </div>
 
             <div class="actions">
@@ -362,7 +619,8 @@
 
             <div class="splitLine"></div>
             <div class="miniHelp">
-              Dica: o token fica salvo no seu navegador (localStorage). Se trocar de PC/navegador, precisa logar de novo.
+              Dica: o token fica salvo no seu navegador (localStorage). Se trocar de PC/navegador, precisa logar de
+              novo.
             </div>
           </div>
         </div>
@@ -384,26 +642,26 @@
             <div class="formGrid">
               <div>
                 <label>Nicho / Tema</label>
-                <input class="field" id="nicho" placeholder="Ex: Controle financeiro simples"/>
+                <input class="field" id="nicho" placeholder="Ex: Controle financeiro simples" />
               </div>
               <div>
                 <label>Objetivo</label>
-                <input class="field" id="objetivo" placeholder="Ex: Criar planner financeiro vendável"/>
+                <input class="field" id="objetivo" placeholder="Ex: Criar planner financeiro vendável" />
               </div>
               <div>
                 <label>Público</label>
-                <input class="field" id="publico" placeholder="Ex: Jovens CLT"/>
+                <input class="field" id="publico" placeholder="Ex: Jovens CLT" />
               </div>
               <div>
                 <label>Meta</label>
-                <input class="field" id="meta" placeholder=" Meta especifica de seus objetivos"/>
+                <input class="field" id="meta" placeholder=" Meta especifica de seus objetivos" />
               </div>
-              
-            
+
+
             </div>
 
 
-            
+
 
             <div class="actions">
               <button class="btn btnPrimary" id="btnGerar">Gerar Prompt</button>
@@ -425,7 +683,8 @@
           <div class="cardHead">
             <div>
               <h2 class="cardTitle">Chat IA</h2>
-              <p class="cardSub">Converse com a IA dentro da plataforma. Histórico fica salvo no Neon e o limite diário controla custo.</p>
+              <p class="cardSub">Converse com a IA dentro da plataforma. Histórico fica salvo no Neon e o limite diário
+                controla custo.</p>
             </div>
             <div class="chatMeta">
               <span class="chip" id="chatUsageChip">Carregando limite…</span>
@@ -504,61 +763,55 @@
     const btnRefreshHistory = $("btnRefreshHistory");
     const btnClearHistory = $("btnClearHistory");
 
-    // ===== CHAT (JWT) =====
-    const chatBox = $("chatBox");
-    const chatInput = $("chatInput");
-    const btnChatSend = $("btnChatSend");
-    const btnChatLoad = $("btnChatLoad");
-    const btnChatClear = $("btnChatClear");
-    const chatStatusLine = $("chatStatusLine");
-    const chatUsageChip = $("chatUsageChip");
+    // ===== CHAT Elements Pre-Declared =====
+    // Chat UI variables are declared lower within the script block
 
-    function isLogged(){
+    function isLogged() {
       return !!localStorage.getItem(TOKEN_KEY);
     }
 
-    function setStatus(type, text){
+    function setStatus(type, text) {
       statusLine.textContent = text;
       badge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : type === "loading" ? " loading" : "");
       badge.textContent =
         type === "loading" ? "Gerando…" :
-        type === "ok" ? "Gerado" :
-        type === "err" ? "Erro" : "Aguardando";
+          type === "ok" ? "Gerado" :
+            type === "err" ? "Erro" : "Aguardando";
     }
 
-    function setAuthBadge(type, text){
+    function setAuthBadge(type, text) {
       authBadge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : type === "loading" ? " loading" : "");
       authBadge.textContent = text;
     }
 
-    function setLoginBadge(type, text){
+    function setLoginBadge(type, text) {
       loginBadge.className = "badge" + (type === "ok" ? " ok" : type === "err" ? " err" : type === "loading" ? " loading" : "");
       loginBadge.textContent = text;
     }
 
-    function escapeHtml(s){
+    function escapeHtml(s) {
       return String(s || "")
-        .replaceAll("&","&amp;")
-        .replaceAll("<","&lt;")
-        .replaceAll(">","&gt;")
-        .replaceAll('"',"&quot;")
-        .replaceAll("'","&#039;");
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
     }
 
-    function nowLabelISO(iso){
-      try{
+    function nowLabelISO(iso) {
+      try {
         const d = new Date(iso);
-        return d.toLocaleString("pt-BR", { dateStyle:"short", timeStyle:"short" });
-      }catch{
+        return d.toLocaleString("pt-BR", { dateStyle: "short", timeStyle: "short" });
+      } catch {
         return "";
       }
     }
 
-    function getToken(){ return (localStorage.getItem(TOKEN_KEY) || "").trim(); }
-    function setToken(t){ localStorage.setItem(TOKEN_KEY, t); }
-    function clearToken(){ localStorage.removeItem(TOKEN_KEY); }
+    function getToken() { return (localStorage.getItem(TOKEN_KEY) || "").trim(); }
+    function setToken(t) { localStorage.setItem(TOKEN_KEY, t); }
+    function clearToken() { localStorage.removeItem(TOKEN_KEY); }
 
-    function authHeaders(){
+    function authHeaders() {
       const t = getToken();
       return {
         "Content-Type": "application/json",
@@ -566,38 +819,38 @@
       };
     }
 
-    async function copyText(text){
+    async function copyText(text) {
       const t = (text || "").trim();
       if (!t) return;
       await navigator.clipboard.writeText(t);
     }
 
-    function getPayload(){
+    function getPayload() {
       return {
         nicho: $("nicho").value.trim(),
         objetivo: $("objetivo").value.trim(),
         publico: $("publico").value.trim(),
         formato: $("meta").value.trim(),
-        
+
       };
     }
 
-    function validate(p){
-      if (!p.nicho || !p.objetivo || !p.publico || !p.meta ) {
+    function validate(p) {
+      if (!p.nicho || !p.objetivo || !p.publico || !p.meta) {
         return "Preencha: Nicho, Objetivo, Público, meta";
       }
       return null;
     }
 
-    function fillForm(payload){
+    function fillForm(payload) {
       $("nicho").value = payload.nicho || "";
       $("objetivo").value = payload.objetivo || "";
       $("publico").value = payload.publico || "";
       $("meta").value = payload.formato || "";
-      
+
     }
 
-    function showLogged(email){
+    function showLogged(email) {
       loginArea.style.display = "none";
       appArea.style.display = "";
       btnLogout.style.display = "";
@@ -606,7 +859,7 @@
       mainGrid.classList.remove("oneCol");
     }
 
-    function showLoggedOut(){
+    function showLoggedOut() {
       loginArea.style.display = "";
       appArea.style.display = "none";
       btnLogout.style.display = "none";
@@ -621,7 +874,7 @@
     }
 
     // ===== AUTH FLOW =====
-    async function checkMe(){
+    async function checkMe() {
       const t = getToken();
       if (!t) return null;
 
@@ -635,10 +888,10 @@
       return data;
     }
 
-    async function doLogin(email, password){
+    async function doLogin(email, password) {
       const r = await fetch(API_BASE + "/auth/login", {
         method: "POST",
-        headers: { "Content-Type":"application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
       });
       const data = await r.json().catch(() => ({}));
@@ -646,10 +899,10 @@
       return data;
     }
 
-    async function doSignup(email, password, code){
+    async function doSignup(email, password, code) {
       const r = await fetch(API_BASE + "/auth/signup", {
         method: "POST",
-        headers: { "Content-Type":"application/json" },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password, code })
       });
       const data = await r.json().catch(() => ({}));
@@ -664,7 +917,7 @@
 
       setLoginBadge("loading", "Entrando…");
       btnLogin.disabled = true; btnSignup.disabled = true;
-      try{
+      try {
         const data = await doLogin(email, password);
         setToken(data.token);
         showLogged(data.email);
@@ -672,11 +925,11 @@
         await renderHistory();
         await refreshChatUsage();
         // opcional: carregar histórico do chat automaticamente
-        await loadChatHistory(50).catch(()=>{});
-      }catch(e){
+        await loadChatHistory(50).catch(() => { });
+      } catch (e) {
         setLoginBadge("err", "Erro");
         alert("Login falhou: " + (e?.message || "unknown"));
-      }finally{
+      } finally {
         btnLogin.disabled = false; btnSignup.disabled = false;
       }
     };
@@ -689,18 +942,18 @@
 
       setLoginBadge("loading", "Criando…");
       btnLogin.disabled = true; btnSignup.disabled = true;
-      try{
+      try {
         const data = await doSignup(email, password, code);
         setToken(data.token);
         showLogged(data.email);
         setLoginBadge("ok", "Conta criada ✓");
         await renderHistory();
         await refreshChatUsage();
-        await loadChatHistory(50).catch(()=>{});
-      }catch(e){
+        await loadChatHistory(50).catch(() => { });
+      } catch (e) {
         setLoginBadge("err", "Erro");
         alert("Signup falhou: " + (e?.message || "unknown"));
-      }finally{
+      } finally {
         btnLogin.disabled = false; btnSignup.disabled = false;
       }
     };
@@ -711,7 +964,7 @@
     };
 
     // ===== HISTORY (JWT) =====
-    async function fetchHistory(limit=50){
+    async function fetchHistory(limit = 50) {
       const r = await fetch(API_BASE + "/api/history?limit=" + encodeURIComponent(String(limit)), {
         method: "GET",
         headers: authHeaders()
@@ -721,7 +974,7 @@
       return data.items || [];
     }
 
-    async function deleteHistoryItem(id){
+    async function deleteHistoryItem(id) {
       const r = await fetch(API_BASE + "/api/history/" + encodeURIComponent(id), {
         method: "DELETE",
         headers: authHeaders()
@@ -731,7 +984,7 @@
       return data;
     }
 
-    async function clearHistoryAll(){
+    async function clearHistoryAll() {
       const r = await fetch(API_BASE + "/api/history", {
         method: "DELETE",
         headers: authHeaders()
@@ -741,16 +994,16 @@
       return data;
     }
 
-    function renderHistoryList(items){
+    function renderHistoryList(items) {
       historyList.innerHTML = "";
       historyCount.textContent = String(items.length || 0);
 
-      if (!items.length){
+      if (!items.length) {
         historyList.innerHTML = `<div class="miniHelp">Nenhum histórico ainda. Gere um prompt para aparecer aqui.</div>`;
         return;
       }
 
-      for (const item of items){
+      for (const item of items) {
         const id = item.id;
         const created = nowLabelISO(item.created_at);
         const payload = item.payload || {};
@@ -777,11 +1030,11 @@
       }
     }
 
-    async function renderHistory(){
-      try{
+    async function renderHistory() {
+      try {
         const items = await fetchHistory(80);
         renderHistoryList(items);
-      }catch(e){
+      } catch (e) {
         historyList.innerHTML = `<div class="miniHelp">Erro ao carregar histórico.</div>`;
       }
     }
@@ -795,7 +1048,7 @@
       const card = btn.closest(".histItem");
       const item = card?._data;
 
-      if (act === "open"){
+      if (act === "open") {
         fillForm(item.payload || {});
         saida.value = item.prompt || "(vazio)";
         btnCopiar.disabled = !(item.prompt && item.prompt.length > 5);
@@ -803,20 +1056,20 @@
         window.scrollTo({ top: 0, behavior: "smooth" });
       }
 
-      if (act === "copy"){
+      if (act === "copy") {
         await copyText(item.prompt || "");
         btn.textContent = "Copiado ✓";
-        setTimeout(()=> btn.textContent = "Copiar", 800);
+        setTimeout(() => btn.textContent = "Copiar", 800);
       }
 
-      if (act === "del"){
-        try{
+      if (act === "del") {
+        try {
           btn.disabled = true;
           await deleteHistoryItem(id);
           await renderHistory();
-        }catch(err){
+        } catch (err) {
           alert("Erro ao excluir: " + (err?.message || "unknown"));
-        }finally{
+        } finally {
           btn.disabled = false;
         }
       }
@@ -827,12 +1080,12 @@
     btnClearHistory.onclick = async () => {
       if (!confirm("Tem certeza que deseja apagar TODO o histórico da sua conta?")) return;
       btnClearHistory.disabled = true;
-      try{
+      try {
         await clearHistoryAll();
         await renderHistory();
-      }catch(err){
+      } catch (err) {
         alert("Erro ao limpar: " + (err?.message || "unknown"));
-      }finally{
+      } finally {
         btnClearHistory.disabled = false;
       }
     };
@@ -844,7 +1097,7 @@
 
       btnCopiar.disabled = true;
 
-      if (err){
+      if (err) {
         saida.value = err;
         setStatus("err", err);
         return;
@@ -853,7 +1106,7 @@
       btnGerar.disabled = true;
       setStatus("loading", "Gerando…");
 
-      try{
+      try {
         const r = await fetch(API_BASE + "/api/prompt", {
           method: "POST",
           headers: authHeaders(),
@@ -862,7 +1115,7 @@
 
         const data = await r.json().catch(() => ({}));
 
-        if (!r.ok){
+        if (!r.ok) {
           const msg = data?.error || data?.detail || ("HTTP " + r.status);
           saida.value = "Erro ao gerar: " + msg;
           setStatus("err", "Erro ao gerar: " + msg);
@@ -875,10 +1128,10 @@
         btnCopiar.disabled = !(prompt && prompt.length > 5);
 
         await renderHistory();
-      } catch(e){
+      } catch (e) {
         saida.value = "Erro de conexão com o servidor.";
         setStatus("err", "Erro de conexão com o servidor.");
-      } finally{
+      } finally {
         btnGerar.disabled = false;
       }
     };
@@ -894,222 +1147,199 @@
     };
 
     btnLimpar.onclick = () => {
-      ["nicho","objetivo","publico","meta"].forEach(id => $(id).value = "");
+      ["nicho", "objetivo", "publico", "meta"].forEach(id => $(id).value = "");
       saida.value = "O prompt vai aparecer aqui…";
       btnCopiar.disabled = true;
       setStatus("idle", "Pronto para gerar.");
     };
 
-    // ===== CHAT (JWT) =====
-    function chatStatus(text){
-      chatStatusLine.textContent = "Status: " + text;
+    // ===== CHAT UI (JWT) =====
+    const chatStatusLine = $("chatStatusLine");
+    const chatBox = $("chatBox");
+    const chatInput = $("chatInput");
+    const btnChatSend = $("btnChatSend");
+    const btnChatClear = $("btnChatClear");
+
+    // Create typing indicator element
+    const typingIndicator = document.createElement("div");
+    typingIndicator.className = "typing-indicator";
+    typingIndicator.id = "typingIndicator";
+    typingIndicator.textContent = "Digitando...";
+    chatBox.parentNode.insertBefore(typingIndicator, chatBox.nextSibling);
+
+    const CHAT_STORAGE_KEY = "ia30d_chat_messages";
+
+    function chatStatus(text) {
+      if (chatStatusLine) chatStatusLine.textContent = "Status: " + text;
     }
 
-    function chatScrollBottom(){
-      chatBox.scrollTop = chatBox.scrollHeight + 9999;
+    function chatScrollBottom() {
+      if (chatBox) chatBox.scrollTop = chatBox.scrollHeight + 9999;
     }
 
-    function chatAdd(role, content){
+    function chatAdd(role, content, saveToStorage = true) {
+      // Visual Append
       const wrap = document.createElement("div");
       wrap.className = "msg " + (role === "user" ? "user" : "ai");
+
       const b = document.createElement("div");
       b.className = "bubble";
       b.textContent = content || "";
+
       wrap.appendChild(b);
       chatBox.appendChild(wrap);
       chatScrollBottom();
-    }
 
-    function chatClearUI(){
-      chatBox.innerHTML = "";
-    }
-
-    async function fetchChatUsage(){
-      const r = await fetch(API_BASE + "/api/chat/usage", { method:"GET", headers: authHeaders() });
-      const data = await r.json().catch(()=> ({}));
-      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
-      return data;
-    }
-
-    async function refreshChatUsage(){
-      try{
-        const u = await fetchChatUsage();
-        chatUsageChip.textContent = `Limite diário: ${u.count}/${u.limit} • Restante: ${u.remaining}`;
-      }catch{
-        chatUsageChip.textContent = "Limite diário: indisponível";
+      // Persist in localStorage array
+      if (saveToStorage) {
+        try {
+          const cache = JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY) || "[]");
+          cache.push({ role, content });
+          localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(cache));
+        } catch (e) { }
       }
     }
 
-    async function loadChatHistory(limit=50){
-      const r = await fetch(API_BASE + "/api/chat/history?limit=" + encodeURIComponent(String(limit)), {
-        method: "GET",
-        headers: authHeaders()
-      });
-      const data = await r.json().catch(()=> ({}));
-      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
-
-      const items = Array.isArray(data.items) ? data.items : [];
-      items.sort((a,b)=> new Date(a.created_at) - new Date(b.created_at));
-
-      chatClearUI();
-      for (const it of items){
-        if (it.role === "user") chatAdd("user", it.content);
-        else if (it.role === "assistant") chatAdd("assistant", it.content);
+    function loadChatHistoryLocally() {
+      chatBox.innerHTML = ""; // reset UI format
+      try {
+        const cache = JSON.parse(localStorage.getItem(CHAT_STORAGE_KEY) || "[]");
+        if (cache.length > 0) {
+          cache.forEach(msg => chatAdd(msg.role, msg.content, false));
+          chatStatus("histórico local carregado.");
+        } else {
+          chatStatus("pronto.");
+        }
+      } catch (e) {
+        chatStatus("pronto.");
       }
-      chatStatus(items.length ? "histórico carregado." : "sem histórico.");
-      chatScrollBottom();
     }
 
-    async function clearChatHistory(){
-      const r = await fetch(API_BASE + "/api/chat/history", {
-        method: "DELETE",
-        headers: authHeaders()
-      });
-      const data = await r.json().catch(()=> ({}));
-      if (!r.ok) throw new Error(data?.error || ("HTTP " + r.status));
-      return data;
-    }
-
-    async function sendChat(){
+    async function sendChat() {
       if (!isLogged()) {
-        alert("Faça login primeiro.");
+        alert("Faça login para usar o chat.");
         return;
       }
 
       const text = (chatInput.value || "").trim();
       if (!text) return;
 
+      // Lock input + button
       btnChatSend.disabled = true;
       chatInput.disabled = true;
+      typingIndicator.classList.add("typing-active"); // Show digitando...
 
+      // Bubble UI directly
       chatAdd("user", text);
       chatInput.value = "";
-      chatStatus("enviando…");
+      chatStatus("enviando...");
 
-      try{
+      try {
+        const token = getToken();
+        // Send strictly to specs:
         const r = await fetch(API_BASE + "/api/chat", {
           method: "POST",
-          headers: authHeaders(),
-          body: JSON.stringify({ message: text })
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({ message: text }) // ONLY string
         });
 
-        const data = await r.json().catch(()=> ({}));
-        if (!r.ok){
-          const err = data?.error || ("HTTP " + r.status);
-          if (err === "chat_limit_reached") {
-            chatAdd("assistant", "Você atingiu o limite diário de mensagens. Volte amanhã.");
-          } else {
-            chatAdd("assistant", "Erro: " + err);
+        const data = await r.json().catch(() => ({}));
+
+        // Handle specified Error states
+        if (!r.ok) {
+          const errStatus = r.status;
+          const errMsg = data?.error || data?.message || "unknown";
+
+          // If 401/403: show "Você precisa entrar/assinar PRO" based on error.message.
+          // If 429: show "Limite diário atingido".
+          // If 500: show "Erro no servidor, tente novamente".
+          let displayMsg = `Erro: ${errMsg}`;
+          if (errStatus === 401 || errStatus === 403) {
+            displayMsg = "Você precisa entrar/assinar PRO.";
+          } else if (errStatus === 429) {
+            displayMsg = "Limite diário atingido.";
+          } else if (errStatus >= 500) {
+            displayMsg = "Erro no servidor, tente novamente.";
           }
+
+          chatAdd("assistant", displayMsg);
           chatStatus("erro.");
-          await refreshChatUsage();
           return;
         }
 
-        const reply = data.reply || "";
-        chatAdd("assistant", reply || "(sem resposta)");
+        // Handle success reply
+        const reply = data.reply || data.text || "(sem resposta)";
+        chatAdd("assistant", reply);
         chatStatus("respondido.");
-        await refreshChatUsage();
-      } catch(e){
-        chatAdd("assistant", "Erro de conexão com o servidor.");
+
+      } catch (e) {
+        chatAdd("assistant", "Erro de conexão com o servidor, tente novamente.");
         chatStatus("erro de conexão.");
-      } finally{
+      } finally {
+        // Unlock UI
         btnChatSend.disabled = false;
         chatInput.disabled = false;
+        typingIndicator.classList.remove("typing-active");
         chatInput.focus();
       }
     }
 
-    btnChatSend.onclick = () => sendChat();
+    // Attach listeners
+    if (btnChatSend) btnChatSend.onclick = () => sendChat();
 
-    chatInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter" && !e.shiftKey){
-        e.preventDefault();
-        if (!isLogged()) {
-          alert("Faça login primeiro.");
-          return;
+    if (chatInput) {
+      chatInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter" && !e.shiftKey) {
+          e.preventDefault();
+          if (!isLogged()) {
+            alert("Faça login para usar o chat.");
+            return;
+          }
+          sendChat();
         }
-        sendChat();
-      }
+      });
+    }
+
+    if (btnChatClear) {
+      btnChatClear.onclick = () => {
+        if (!confirm("Tem certeza de que deseja limpar a tela e apagar o histórico salvo no seu navegador?")) return;
+        chatBox.innerHTML = "";
+        localStorage.removeItem(CHAT_STORAGE_KEY);
+        chatStatus("histórico apagado localmente.");
+      };
+    }
+
+    // Pro listeners
+    document.getElementById("btnGoPro").addEventListener("click", () => {
+      window.location.href = "pro.html";
     });
 
-    btnChatLoad.onclick = async () => {
-      if (!isLogged()) return alert("Faça login primeiro.");
-      btnChatLoad.disabled = true;
-      try{
-        chatStatus("carregando histórico…");
-        await loadChatHistory(80);
-        await refreshChatUsage();
-      }catch(err){
-        chatStatus("erro ao carregar.");
-        alert("Erro ao carregar chat: " + (err?.message || "unknown"));
-      }finally{
-        btnChatLoad.disabled = false;
-      }
-    };
-    document.getElementById("btnGoPro").addEventListener("click", async () => {
-  try {
-    const token = localStorage.getItem("token");
-    if (!token) return alert("Faça login para assinar o PRO.");
+    const params = new URLSearchParams(location.search);
+    if (params.get("pro") === "success") {
+      alert("Pagamento confirmado. PRO ativado ✅");
+      history.replaceState({}, "", location.pathname);
+    }
+    if (params.get("pro") === "cancel") {
+      alert("Pagamento cancelado.");
+      history.replaceState({}, "", location.pathname);
+    }
 
-    const r = await fetch(API_BASE + "/billing/checkout", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": "Bearer " + token
-      },
-      body: "{}"
-    });
-
-    const data = await r.json().catch(() => ({}));
-    if (!r.ok) throw new Error(data.error || "Falhou ao iniciar pagamento");
-
-    // abre checkout hospedado (Stripe)
-    window.location.href = data.url;
-  } catch (e) {
-    alert(e.message || "Erro");
-  }
-});
-
-const params = new URLSearchParams(location.search);
-if (params.get("pro") === "success") {
-  alert("Pagamento confirmado. PRO ativado ✅");
-  history.replaceState({}, "", location.pathname);
-}
-if (params.get("pro") === "cancel") {
-  alert("Pagamento cancelado.");
-  history.replaceState({}, "", location.pathname);
-}
-
-    btnChatClear.onclick = async () => {
-      if (!isLogged()) return alert("Faça login primeiro.");
-      if (!confirm("Apagar TODO o histórico do chat da sua conta?")) return;
-      btnChatClear.disabled = true;
-      try{
-        await clearChatHistory();
-        chatClearUI();
-        chatStatus("apagado.");
-        await refreshChatUsage();
-      }catch(err){
-        alert("Erro ao apagar chat: " + (err?.message || "unknown"));
-      }finally{
-        btnChatClear.disabled = false;
-      }
-    };
-
-    // init
-    (async function init(){
+    // init Override block
+    (async function init() {
       setStatus("idle", "Pronto para gerar.");
       const me = await checkMe();
-      if (me?.email){
+      if (me?.email) {
         showLogged(me.email);
         await renderHistory();
-        await refreshChatUsage();
-        await loadChatHistory(50).catch(()=>{});
+        loadChatHistoryLocally();
       } else {
         showLoggedOut();
       }
     })();
   </script>
 </body>
+
 </html>

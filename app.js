@@ -22,7 +22,7 @@
       prev.push(payload);
       localStorage.setItem(key, JSON.stringify(prev));
       // console.log("[track]", payload);
-    } catch (_) {}
+    } catch (_) { }
   }
 
   function bindCta(id) {
@@ -30,16 +30,16 @@
     if (!el) return;
     el.addEventListener("click", () => {
 
-      
+
       const ev = el.getAttribute("data-ev") || id;
 
-          // GA4 - evento correto de clique no checkout
-    if (typeof window.gtag === "function") {
-      window.gtag('event', 'click_checkout', {
-        event_category: 'engagement',
-        event_label: ev
-      });
-    }
+      // GA4 - evento correto de clique no checkout
+      if (typeof window.gtag === "function") {
+        window.gtag('event', 'click_checkout', {
+          event_category: 'engagement',
+          event_label: ev
+        });
+      }
 
       track(ev);
       safeNavigate(checkoutUrl);
@@ -54,28 +54,62 @@
   const insideBtn = document.getElementById("seeWhatsInside");
   if (insideBtn) {
     insideBtn.addEventListener("click", () => {
-      
+
 
       track("see_inside");
       document.getElementById("inside")?.scrollIntoView({ behavior: "smooth" });
     });
   }
   document.addEventListener("click", (e) => {
-  const el = e.target.closest("[data-ev]");
-  if (!el) return;
+    const el = e.target.closest("[data-ev]");
+    if (!el) return;
 
-  if (typeof window.gtag === "function") {
-    window.gtag("event", el.getAttribute("data-ev"), {
-      event_category: "navigation"
-    });
-  }
-});
-
-document.querySelectorAll('.btn-primary').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    window.location.href = window.CHECKOUT_URL;
+    if (typeof window.gtag === "function") {
+      window.gtag("event", el.getAttribute("data-ev"), {
+        event_category: "navigation"
+      });
+    }
   });
-});
+
+  document.querySelectorAll('.btn-primary').forEach(btn => {
+    btn.addEventListener('click', () => {
+      window.location.href = window.CHECKOUT_URL;
+    });
+  });
+
+  document.querySelectorAll('.btn-pro-checkout').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      btn.disabled = true;
+      const oldText = btn.textContent;
+      btn.textContent = "Carregando...";
+      try {
+        const token = localStorage.getItem("ia30d_jwt_v1");
+        if (!token) {
+          alert("Você precisa fazer login no Gerador para assinar o PRO.");
+          window.location.href = "gerador.html";
+          return;
+        }
+
+        const r = await fetch("https://prompt-api-7999.onrender.com/api/stripe/checkout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer " + token
+          },
+          body: JSON.stringify({})
+        });
+
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) throw new Error(data.error || "Falhou ao iniciar pagamento");
+
+        window.location.href = data.url;
+      } catch (e) {
+        alert(e.message || "Erro");
+        btn.disabled = false;
+        btn.textContent = oldText;
+      }
+    });
+  });
 
   // Track page view (MVP)
   track("page_view");
