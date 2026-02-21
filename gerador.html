@@ -836,7 +836,7 @@
     }
 
     function validate(p) {
-      if (!p.nicho || !p.objetivo || !p.publico || !p.meta) {
+      if (!p.nicho || !p.objetivo || !p.publico || !p.formato) {
         return "Preencha: Nicho, Objetivo, Público, meta";
       }
       return null;
@@ -923,9 +923,7 @@
         showLogged(data.email);
         setLoginBadge("ok", "Logado ✓");
         await renderHistory();
-        await refreshChatUsage();
-        // opcional: carregar histórico do chat automaticamente
-        await loadChatHistory(50).catch(() => { });
+        loadChatHistoryLocally();
       } catch (e) {
         setLoginBadge("err", "Erro");
         alert("Login falhou: " + (e?.message || "unknown"));
@@ -948,8 +946,7 @@
         showLogged(data.email);
         setLoginBadge("ok", "Conta criada ✓");
         await renderHistory();
-        await refreshChatUsage();
-        await loadChatHistory(50).catch(() => { });
+        loadChatHistoryLocally();
       } catch (e) {
         setLoginBadge("err", "Erro");
         alert("Signup falhou: " + (e?.message || "unknown"));
